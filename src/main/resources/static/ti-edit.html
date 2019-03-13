@@ -400,7 +400,7 @@
                         "            </div>\n" +
                         "        </div>\n" +
                         "        <div class=\"row cl\">\n" +
-                        "            <label class=\"form-label col-xs-4 col-sm-3\">接口开发人员：</label>\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>接口开发人员：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
                         "               <span class=\"select-box\">\n" +
                         "                    <select class=\"select\" size=\"1\" name=\"idev\" id=\"idev\">\n" +
@@ -475,6 +475,9 @@
             return;
         } else if (remark == null || remark == "") {
             layer.msg("接口描述不能为空！");
+            return;
+        } else if (idev == null || idev == "") {
+            layer.msg("开发人员不能为空！");
             return;
         } else {
             $.ajax({

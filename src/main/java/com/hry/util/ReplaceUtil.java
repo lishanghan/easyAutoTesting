@@ -533,15 +533,18 @@ public class ReplaceUtil {
             //$abc,从返回值中找到第一个key名字为abc的值
             //${aaa{bbb[ccc,从返回值按json解析层级找出abc的值
             if (isAfter && (value.matches(RegexEnum.SIMPLE_JSONKEY.getRegex()) || value.matches(RegexEnum.HARD_JSONKEY.getRegex()))) {
+                if(responseBody.contains("xmlns")){
+                    responseBody = XmlHelper.xmlToJson(responseBody);
+                    log.info("xml转换后的json为："+ responseBody);
+
+                }
                 String getValueFromResponseBody = JSONUtil.getValue(responseBody, value);
                 value = getValueFromResponseBody == null ? "【返回JSON中未发现此Key】" : getValueFromResponseBody;
             }
 
-
             if (value.length() > 500) {
                 value = value.substring(0, 499);
             }
-
             temp.setTestingid(entity.testingId);
             temp.setTempkey(key);
             temp.setTempvalue(value);

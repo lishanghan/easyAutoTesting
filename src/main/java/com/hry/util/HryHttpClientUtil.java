@@ -267,7 +267,8 @@ public class HryHttpClientUtil {
             //String url=test.getTi().getIuri();
             String url = HttpTypeEnum.getValue(test.getTservice().getHttptype()) + "://" + test.getTservicedetail().getHostinfo() + test.getTi().getIuri();
             String soapAction = test.getTi().getSoapAction();
-            String xml = test.getTcase().getRequestparam();
+            //String xml = test.getTcase().getRequestparam();
+            String xml = param;
             responseBody = soapXmlSend(url,xml,soapAction);
 
         }
