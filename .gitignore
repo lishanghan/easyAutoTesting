@@ -23,7 +23,6 @@ application-devUseProdDB.yml
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 *.zip
