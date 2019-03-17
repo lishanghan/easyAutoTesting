@@ -11,14 +11,14 @@ logging:
 #    com.hry.mapper.*: debug
 spring:
   application:
-    name: easyAuto
+    name: easyAutoTesting
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.52.88:3306/hry_auto?serverTimezone=CTT&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
-    username: hry_auto
-    password: hry_auto
-    druid:-
+    url: jdbc:mysql://192.168.1.115:3306/hry_auto?serverTimezone=CTT&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    username: root
+    password: root
+    druid:
 #      name: myDatasource
       initial-size: 5
       min-idle: 5

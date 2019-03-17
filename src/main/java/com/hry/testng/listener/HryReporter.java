@@ -133,6 +133,7 @@ public class HryReporter implements IReporter {
         // 设置静态文件的DNS
         //怎么样解决cdn.rawgit.com访问不了的情况
         htmlReporter.config().setResourceCDN(ResourceCDN.EXTENTREPORTS);
+        //htmlReporter.config().set
 
         htmlReporter.config().setDocumentTitle("很容易自动化测试报告");
         if (StringUtils.isNotBlank(customName)) {
