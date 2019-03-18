@@ -19,10 +19,10 @@ logging:
     #com.hry.mapper.*: debug
 spring:
   application:
-    name: easyAuto
+    name: easyAutoTesting
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://127.0.0.1:3306/hry_auto?serverTimezone=CTT&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    url: jdbc:mysql://192.168.52.24:3306/hry_auto?serverTimezone=CTT&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: root
