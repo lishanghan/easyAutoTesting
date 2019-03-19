@@ -149,6 +149,8 @@ public class UserController {
     //登录
     @PostMapping("/login")
     public Result login(HttpServletRequest request, HttpServletResponse response, String identity, String password) throws UnsupportedEncodingException {
+       //解决登录跨域问题
+        response.setHeader("Access-Control-Allow-Origin", "*");
         HttpSession session;
         User user = null;
         if (!StringUtils.isAnyBlank(identity, password)) {
@@ -160,6 +162,7 @@ public class UserController {
         if (user == null) {
             return ResultUtil.error(StatusCodeEnum.LOGIN_ERROR);
         } else {
+
             session = request.getSession(true);
             session.setMaxInactiveInterval(60 * 60 * 24 * 30);//秒为单位,设置一个月的有效时间
             session.setAttribute("userSession", user.getIdentity());
@@ -184,7 +187,6 @@ public class UserController {
             response.addCookie(realnameCookie);
             response.addCookie(groupidCookie);
             response.addCookie(uidCookie);
-
             return ResultUtil.success();
         }
     }
