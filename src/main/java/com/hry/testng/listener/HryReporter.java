@@ -8,6 +8,7 @@ import com.aventstack.extentreports.model.TestAttribute;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.reporter.configuration.ChartLocation;
 import com.aventstack.extentreports.reporter.configuration.Theme;
+import com.hry.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.*;
@@ -15,6 +16,7 @@ import org.testng.annotations.Test;
 import org.testng.xml.XmlSuite;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -29,6 +31,8 @@ public class HryReporter implements IReporter {
     private String reportPath;//测试报告存入于服务器的位置 如:C:/testngReport/(windows环境下的存放地址)
     private String fileName;//测试报告访问的地址 如: report_u53_c14_20180723_151134.html   访问时前面加域名即可
     private String customName;//测试报告中的报告名称,一般传定制名称
+    //获取当前类绝对路径
+    public  final  String path = IReporter.class.getClassLoader().getResource("").getPath();
 
     public HryReporter(String reportPath, String fileName) {
         this(reportPath, fileName, null);
@@ -127,6 +131,14 @@ public class HryReporter implements IReporter {
         File reportDir = new File(reportPath);
         if (!reportDir.exists() && !reportDir.isDirectory()) {
             reportDir.mkdir();
+            /*//复制测试报告所需要CSS和js文件到报告目录
+            String bPath = path + "static/static/hry-auto/";
+            try {
+                FileUtil.copy(bPath,reportPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }*/
+
         }
         ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(reportPath + fileName);
         /*ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(OUTPUT_FOLDER + FILE_NAME);*/

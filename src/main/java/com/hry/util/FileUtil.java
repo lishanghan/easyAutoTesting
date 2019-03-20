@@ -3,6 +3,8 @@ package com.hry.util;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Description: 文件工具类, 提供文件读取写存储的方法
@@ -164,6 +166,52 @@ public class FileUtil {
         File f = new File(sb.toString());
         if (f.exists())
             f.delete();
+
+    }
+
+
+
+    /**
+     * 复制指定目录（不含该目录）下的所有文件及子目录到新的目录
+     * @param oldPath   源文件目录
+     * @param newPath 目标路径
+     * */
+    public static void copy(String oldPath, String newPath) throws IOException {
+
+        File file1 = new File(oldPath);
+        File file2 = new File(newPath);
+        file2.mkdirs();
+        String strname[] = file1.list();
+        Runtime run = Runtime.getRuntime();
+        Process p = null;
+        List<String> lpath = new ArrayList<String>();
+        for (String fn : strname) {
+            file2 = new File(oldPath + "\\" + fn);
+            if (file2.isDirectory()) {
+                new File(newPath + "\\" + fn).mkdirs();
+                lpath.add("\\" + fn + "\\");
+                for (int i = 0; i < lpath.size(); i++) {
+                    file2 = new File(oldPath + lpath.get(i));
+                    String strname1[] = file2.list();
+                    for (String fn1 : strname1) {
+                        if (new File(oldPath + lpath.get(i) + fn1).isDirectory()) {
+                            new File(newPath + lpath.get(i) + fn1).mkdirs();
+                            lpath.add(lpath.get(i) + fn1 + "\\");
+                        } else {
+                            p = run.exec("cmd /c copy " + oldPath + lpath.get(i) + fn1 + " " + newPath + lpath.get(i) + fn1);
+                            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                            reader.readLine();
+
+                        }
+                    }
+                }
+            } else {
+                p = run.exec("cmd /c copy " + oldPath + "\\" + fn + " " + newPath + "\\" + fn);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                reader.readLine();
+            }
+        }
+
 
     }
 
