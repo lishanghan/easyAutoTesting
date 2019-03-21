@@ -8,16 +8,19 @@ import com.aventstack.extentreports.model.TestAttribute;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.reporter.configuration.ChartLocation;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-import com.hry.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.*;
 import org.testng.annotations.Test;
 import org.testng.xml.XmlSuite;
-
 import java.io.File;
-import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.util.*;
+import com.hry.util.FileUtil;
+import com.hry.util.SpringContextUtil;
+import java.io.IOException;
+
 
 /**
  * @description:
@@ -32,7 +35,9 @@ public class HryReporter implements IReporter {
     private String fileName;//测试报告访问的地址 如: report_u53_c14_20180723_151134.html   访问时前面加域名即可
     private String customName;//测试报告中的报告名称,一般传定制名称
     //获取当前类绝对路径
-    public  final  String path = IReporter.class.getClassLoader().getResource("").getPath();
+    //public String path = IReporter.class.getClassLoader().getResource("").getPath();
+
+
 
     public HryReporter(String reportPath, String fileName) {
         this(reportPath, fileName, null);
@@ -127,19 +132,53 @@ public class HryReporter implements IReporter {
     }
 
     private void init() {
+        URL url = this.getClass().getProtectionDomain().getCodeSource().getLocation();
+        String path = null;
+        try {
+            path = java.net.URLDecoder.decode(url.getPath(), "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        //获取运行环境
+        String active = SpringContextUtil.getActiveProfile();
+        log.info("当前运行环境为："+active);
+
         //文件夹不存在的话进行创建
         File reportDir = new File(reportPath);
         if (!reportDir.exists() && !reportDir.isDirectory()) {
             reportDir.mkdir();
-            /*//复制测试报告所需要CSS和js文件到报告目录
-            String bPath = path + "static/static/hry-auto/";
-            try {
-                FileUtil.copy(bPath,reportPath);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
+            String bPath = "";
+            log.info("当前路径："+path );
+            if(active.equals("dev")){
+                path = path.replace("/","\\").substring(1);
+                bPath = path + "static\\static\\hry-auto";
+                try {
+                    FileUtil.copy(bPath,reportPath);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if(active.equals("prod")){
+                //path = path.substring(0, path.lastIndexOf('/') + 1);
+                //bPath = path + "static/static/hry-auto";
+                bPath = "static"+File.separator+"static"+File.separator+"hry-auto"+File.separator;
+                try {
+                    FileUtil.loadRecourseFromJarByFolder(bPath,reportPath,HryReporter.class);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            log.info("源文件路径="+path+bPath);
+            log.info("目标路径："+reportPath);
+
+
+
+
 
         }
+
         ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(reportPath + fileName);
         /*ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(OUTPUT_FOLDER + FILE_NAME);*/
         // 设置静态文件的DNS

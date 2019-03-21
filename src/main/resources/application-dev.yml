@@ -1,5 +1,5 @@
 zdy:
-  reportPath: C:/testngReport/
+  reportPath: C:\testngReport\
   resourcePathPattern: /test-output/
   autoCodeDir: C:/autoCode/
   debug: false
