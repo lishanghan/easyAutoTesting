@@ -235,14 +235,24 @@ public class FileUtil {
      * @param clazz 调用类class
      *
      * */
-    public static void loadRecourseFromJarByFolder(String folderPath, String targetFolderPath, Class clazz) throws IOException {
+    public static void loadRecourseFromJarByFolder(String folderPath, String targetFolderPath, Class clazz){
+        log.info("进来了-------");
         URL url = clazz.getResource(folderPath);
-        URLConnection urlConnection = url.openConnection();
-        if (urlConnection instanceof FileURLConnection) {
-            copyFileResources(url, folderPath, targetFolderPath, clazz);
-        } else if (urlConnection instanceof JarURLConnection) {
-            copyJarResources((JarURLConnection) urlConnection, folderPath, targetFolderPath, clazz);
+        URLConnection urlConnection = null;
+        try {
+            urlConnection = url.openConnection();
+            if (urlConnection instanceof FileURLConnection) {
+                copyFileResources(url, folderPath, targetFolderPath, clazz);
+            } else if (urlConnection instanceof JarURLConnection) {
+
+                copyJarResources((JarURLConnection) urlConnection, folderPath, targetFolderPath, clazz);
+                log.info("进来了*******");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
     }
 
     /**
@@ -273,19 +283,27 @@ public class FileUtil {
      * @param jarURLConnection
      * @throws IOException
      */
-    private static void copyJarResources(JarURLConnection jarURLConnection, String folderPath, String targetFolderPath, Class clazz) throws IOException {
-        JarFile jarFile = jarURLConnection.getJarFile();
-        Enumeration<JarEntry> entrys = jarFile.entries();
-        while (entrys.hasMoreElements()) {
-            JarEntry entry = entrys.nextElement();
-            if (entry.getName().startsWith(jarURLConnection.getEntryName()) && !entry.getName().endsWith("/")) {
-                loadRecourseFromJar("/" + entry.getName(), targetFolderPath, clazz);
+    private static void copyJarResources(JarURLConnection jarURLConnection, String folderPath, String targetFolderPath, Class clazz){
+        JarFile jarFile = null;
+        try {
+            jarFile = jarURLConnection.getJarFile();
+            Enumeration<JarEntry> entrys = jarFile.entries();
+            while (entrys.hasMoreElements()) {
+                JarEntry entry = entrys.nextElement();
+                if (entry.getName().startsWith(jarURLConnection.getEntryName()) && !entry.getName().endsWith("/")) {
+                    loadRecourseFromJar("/" + entry.getName(), targetFolderPath, clazz);
+                    log.info("entry.getName="+entry.getName());
+                }
             }
+            jarFile.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        jarFile.close();
+
     }
 
-    public static void loadRecourseFromJar(String path, String recourseFolder, Class clazz) throws IOException {
+    public static void loadRecourseFromJar(String path, String recourseFolder, Class clazz){
         if (!path.startsWith("/")) {
             throw new IllegalArgumentException("The path has to be absolute (start with '/').");
         }
@@ -295,9 +313,11 @@ public class FileUtil {
         }
 
         int index = path.lastIndexOf('/');
-
+        log.info("path="+path);
         String filename = path.substring(index + 1);
         String folderPath = recourseFolder + path.substring(0, index + 1);
+        log.info("folderPath1="+folderPath);
+
 
         // If the folder does not exist yet, it will be created. If the folder
         // exists already, it will be ignored
@@ -311,32 +331,40 @@ public class FileUtil {
         filename = folderPath + filename;
         File file = new File(filename);
 
-        if (!file.exists() && !file.createNewFile()) {
-            log.error("create file :{} failed .fileName:" + filename);
-            return;
-        }
-
-        // Prepare buffer for data copying
-        byte[] buffer = new byte[1024];
-        int readBytes;
-
-        // Open and check input stream
-        URL url = clazz.getResource(path);
-        URLConnection urlConnection = url.openConnection();
-        InputStream is = urlConnection.getInputStream();
-
-        if (is == null) {
-            throw new FileNotFoundException("File " + path + " was not found inside JAR.");
-        }
-        OutputStream os = new FileOutputStream(file);
         try {
-            while ((readBytes = is.read(buffer)) != -1) {
-                os.write(buffer, 0, readBytes);
+            if (!file.exists() && !file.createNewFile()) {
+                log.error("create file :{} failed .fileName:" + filename);
+                return;
             }
-        } finally {
-            os.close();
-            is.close();
+
+            // Prepare buffer for data copying
+            byte[] buffer = new byte[1024];
+            int readBytes;
+
+            // Open and check input stream
+            URL url = clazz.getResource(path);
+            URLConnection urlConnection = url.openConnection();
+            InputStream is = urlConnection.getInputStream();
+
+            if (is == null) {
+                throw new FileNotFoundException("File " + path + " was not found inside JAR.");
+            }
+            OutputStream os = new FileOutputStream(file);
+            try {
+                while ((readBytes = is.read(buffer)) != -1) {
+                    os.write(buffer, 0, readBytes);
+                }
+            } finally {
+                os.close();
+                is.close();
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+
 
     }
 

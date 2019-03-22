@@ -162,12 +162,9 @@ public class HryReporter implements IReporter {
             }else if(active.equals("prod")){
                 //path = path.substring(0, path.lastIndexOf('/') + 1);
                 //bPath = path + "static/static/hry-auto";
-                bPath = "static"+File.separator+"static"+File.separator+"hry-auto"+File.separator;
-                try {
-                    FileUtil.loadRecourseFromJarByFolder(bPath,reportPath,HryReporter.class);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                bPath = "static/static/hry-auto";
+                log.info("进来了+++++++");
+                FileUtil.loadRecourseFromJarByFolder(bPath,reportPath,HryReporter.class);
             }
 
             log.info("源文件路径="+path+bPath);
