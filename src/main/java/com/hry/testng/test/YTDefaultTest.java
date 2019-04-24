@@ -129,6 +129,48 @@ public class YTDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
+    @Test(testName = "/sitco/S100605", dataProvider = "provider", description = "查询未完成线上订单数量")
+    public void sitco_S100605(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/sitco/S100608", dataProvider = "provider", description = "基础信息-线上交易信息查询")
+    public void sitco_S100608(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/sitco/S100609", dataProvider = "provider", description = "待维系客户列表查询")
+    public void sitco_S100609(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/sitco/S100610", dataProvider = "provider", description = "待维系客户数量查询")
+    public void sitco_S100610(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/sitco/S100611", dataProvider = "provider", description = "开户在途客户列表查询")
+    public void sitco_S100611(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/sitco/S100612", dataProvider = "provider", description = "开户在途客户数量查询")
+    public void sitco_S100612(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/sitco/S100613", dataProvider = "provider", description = "获取客户经理头像信息")
+    public void sitco_S100613(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
     @Test(testName = "sitco/S100011", dataProvider = "provider", description = "风险测评答案提交")
     public void sitco_S100011(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
@@ -152,7 +194,5 @@ public class YTDefaultTest extends Base{
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
-
-
 
 }
