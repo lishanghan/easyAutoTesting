@@ -171,25 +171,25 @@ public class YTDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "sitco/S100011", dataProvider = "provider", description = "风险测评答案提交")
+    @Test(testName = "/sitco/S100011", dataProvider = "provider", description = "风险测评答案提交")
     public void sitco_S100011(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "sitco/S100107", dataProvider = "provider", description = "非基金类产品持仓查询")
+    @Test(testName = "/sitco/S100107", dataProvider = "provider", description = "非基金类产品持仓查询")
     public void sitco_S100107(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "sitco/S100167", dataProvider = "provider", description = "查询信睿理财账号")
+    @Test(testName = "/sitco/S100167", dataProvider = "provider", description = "查询信睿理财账号")
     public void sitco_S100167(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "sitco/S100181", dataProvider = "provider", description = "交易订单查询")
+    @Test(testName = "/sitco/S100181", dataProvider = "provider", description = "交易订单查询")
     public void sitco_S100181(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);

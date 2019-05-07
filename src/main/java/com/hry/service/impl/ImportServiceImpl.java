@@ -98,6 +98,9 @@ public class ImportServiceImpl implements ImportService {
                 ti.setRemark(summary);
                 ti.setIdev(iDev);
 
+                if(postJsonObject.getJSONArray("consumes").isEmpty()){
+                    postJsonObject.getJSONArray("consumes").add("application/json");
+                }
                 JSONArray consumes = postJsonObject.getJSONArray("consumes");
                 String consumesType = consumes.getString(0);
                 if (ContentTypeEnum.getId(consumesType) != null) {

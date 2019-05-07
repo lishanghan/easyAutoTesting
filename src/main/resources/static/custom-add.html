@@ -263,7 +263,7 @@
     function spread(serviceId) {
         var list = getAllTiAndCaseByServiceId(serviceId);
         if (list.length == 0) {
-            layer.alert("该服务下无接口！");
+            layer.alert("该服务下无用例！");
         } else {
             $("#show-" + serviceId + "").html("");
             var h = "<a title=\"收起\" href=\"javascript:0;\" onclick=\"retract(" + serviceId + ")\" class=\"ml-5\" style=\"float:right;text-decoration:none;margin-right:8px;\"><i style='font-size: 18px;' class=\"Hui-iconfont\">&#xe699;</i></a>";
