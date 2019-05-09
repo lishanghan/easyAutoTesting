@@ -89,6 +89,10 @@ public class ImportServiceImpl implements ImportService {
             String iUri = entry.getKey();//ti.iuri
             try {
                 JSONObject iUriJsonObject = (JSONObject) entry.getValue();
+                //目前暂不支持get接口导入，如果是get接口直接跳过
+                if(iUriJsonObject.containsKey("get")){
+                    continue;
+                }
                 JSONObject postJsonObject = iUriJsonObject.getJSONObject("post");
                 String summary = postJsonObject.getString("summary");//接口描述信息,作为i.remark插入
 
@@ -98,6 +102,7 @@ public class ImportServiceImpl implements ImportService {
                 ti.setRemark(summary);
                 ti.setIdev(iDev);
 
+                //swagger导入有时会存在consumes对象为空的情况，如果consumes为空就添加默认值"application/json"
                 if(postJsonObject.getJSONArray("consumes").isEmpty()){
                     postJsonObject.getJSONArray("consumes").add("application/json");
                 }
