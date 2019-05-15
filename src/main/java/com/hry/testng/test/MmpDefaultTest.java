@@ -8,10 +8,10 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import static com.hry.util.AssertUtil.supperAssert;
-@SKey("Gateway")
-public class GatewayDefaultTest extends Base{
+@SKey("Mmp")
+public class MmpDefaultTest extends Base{
     @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy", "testingId"})
-    public GatewayDefaultTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {
+    public MmpDefaultTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {
         super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
     }
 
@@ -21,7 +21,7 @@ public class GatewayDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/business/appoint/cancel", dataProvider = "provider", description = "取消预约")
+    @Test(testName = "/business/appoint/cancel", dataProvider = "provider", description = "取消预约 ✔✔✔")
     public void business_appoint_cancel(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
@@ -33,7 +33,7 @@ public class GatewayDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/business/appoint/update", dataProvider = "provider", description = "修改预约")
+    @Test(testName = "/business/appoint/update", dataProvider = "provider", description = "修改预约 ✔✔✔")
     public void business_appoint_update(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
@@ -63,14 +63,38 @@ public class GatewayDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
+    @Test(testName = "/business/uploadVideo", dataProvider = "provider", description = "视频上传，更新订单状态")
+    public void business_uploadVideo(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/customer/accountingCustomer", dataProvider = "provider", description = "开户在途客户列表")
+    public void customer_accountingCustomer(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
     @Test(testName = "/customer/add", dataProvider = "provider", description = "创建客户 ✔✔✔")
     public void customer_add(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/advancedInfo", dataProvider = "provider", description = "查询客户高级信息")
+    @Test(testName = "/customer/addWithRelation", dataProvider = "provider", description = "新增客户和关系 ✔✔✔")
+    public void customer_addWithRelation(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/customer/advancedInfo", dataProvider = "provider", description = "查询客户高级信息 dataId=客户ID ✔✔✔")
     public void customer_advancedInfo(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/customer/advancedInfo/modify", dataProvider = "provider", description = "修改客户高级信息 ✔✔✔")
+    public void customer_advancedInfo_modify(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -81,37 +105,19 @@ public class GatewayDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/assets", dataProvider = "provider", description = "查询客户资产汇总信息")
+    @Test(testName = "/customer/assets", dataProvider = "provider", description = "查询客户资产汇总信息 ✔✔✔")
     public void customer_assets(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/assets/list", dataProvider = "provider", description = "查询客户资产分类信息")
-    public void customer_assets_list(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/customer/assets/listType", dataProvider = "provider", description = "查询客户资产分类")
-    public void customer_assets_listType(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/customer/baseInfo", dataProvider = "provider", description = "查询客户基本信息")
-    public void customer_baseInfo(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/customer/detail", dataProvider = "provider", description = "查询客户详细信息")
+    @Test(testName = "/customer/detail", dataProvider = "provider", description = "查询客户详细信息 dataId=客户编号 ✔✔✔")
     public void customer_detail(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/idInfo/upload", dataProvider = "provider", description = "客户证件上传")
+    @Test(testName = "/customer/idInfo/upload", dataProvider = "provider", description = "客户证件上传 ✔✔✔")
     public void customer_idInfo_upload(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
@@ -123,19 +129,13 @@ public class GatewayDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/label/add", dataProvider = "provider", description = "新增自定义客户标签")
-    public void customer_label_add(HryTest test) {
+    @Test(testName = "/customer/label/modify", dataProvider = "provider", description = "修改客户标签 ✔✔✔")
+    public void customer_label_modify(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/label/delete", dataProvider = "provider", description = "删除客户标签")
-    public void customer_label_delete(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/customer/list", dataProvider = "provider", description = "查询系统客户经理名下客户列表，需要传入brokerCode")
+    @Test(testName = "/customer/list", dataProvider = "provider", description = "查询MM系统保存的客户经理名下客户列表 ✔✔✔")
     public void customer_list(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
@@ -143,12 +143,6 @@ public class GatewayDefaultTest extends Base{
 
     @Test(testName = "/customer/listCrm", dataProvider = "provider", description = "通过接口查询CRM系统客户经理名下客户列表，支持筛选 ✔✔✔")
     public void customer_listCrm(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/customer/moreInfo/modify", dataProvider = "provider", description = "修改客户高级信息")
-    public void customer_moreInfo_modify(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -165,26 +159,20 @@ public class GatewayDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/relation", dataProvider = "provider", description = "查询客户关系信息")
+    @Test(testName = "/customer/relation", dataProvider = "provider", description = "查询客户关系信息 ✔✔✔")
     public void customer_relation(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/relation/add", dataProvider = "provider", description = "新增客户关系")
+    @Test(testName = "/customer/relation/add", dataProvider = "provider", description = "新增客户关系 ✔✔✔")
     public void customer_relation_add(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/update", dataProvider = "provider", description = "更新客户,只能更新高级信息，所以该接口不适用")
-    public void customer_update(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/customer/video/add", dataProvider = "provider", description = "上传客户视频请求记录")
-    public void customer_video_add(HryTest test) {
+    @Test(testName = "/customer/relation/update", dataProvider = "provider", description = "更新客户关系 ✔✔✔")
+    public void customer_relation_update(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -219,12 +207,6 @@ public class GatewayDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/fund/list", dataProvider = "provider", description = "获取产品列表，创建预约时,选择产品/产品信息列表展示")
-    public void fund_list(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
     @Test(testName = "/fund/list/crm", dataProvider = "provider", description = "获取CRM产品列表,已对接")
     public void fund_list_crm(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
@@ -249,14 +231,20 @@ public class GatewayDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/index/login", dataProvider = "provider", description = "登录系统")
-    public void index_login(HryTest test) {
+    @Test(testName = "/index/dict2", dataProvider = "provider", description = "数据字典查询接口2")
+    public void index_dict2(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/index/logout", dataProvider = "provider", description = "主页-退出系统")
-    public void index_logout(HryTest test) {
+    @Test(testName = "/index/image", dataProvider = "provider", description = "主页-用户头像")
+    public void index_image(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/index/locked", dataProvider = "provider", description = "查询锁定用户列表, 返回登录用户名列表")
+    public void index_locked(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -267,20 +255,14 @@ public class GatewayDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/index/userInfo", dataProvider = "provider", description = "主页-用户头像")
-    public void index_userInfo(HryTest test) {
+    @Test(testName = "/index/unlock", dataProvider = "provider", description = "查询锁定用户列表, 返回登录用户名列表")
+    public void index_unlock(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
     @Test(testName = "/index/version", dataProvider = "provider", description = "主页-版本信息")
     public void index_version(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/p/{random}", dataProvider = "provider", description = "shortUrl")
-    public void p__random_(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }

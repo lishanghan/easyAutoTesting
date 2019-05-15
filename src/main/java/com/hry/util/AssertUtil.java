@@ -27,6 +27,13 @@ import java.util.regex.PatternSyntaxException;
  */
 @Slf4j
 public class AssertUtil {
+
+    /**
+     * @param assertType 断言类型
+     * @param expected 预期结果
+     * @param actual 实际结果
+     * @param actualType
+     * */
     public static void supperAssert(Integer assertType, String expected, String actual, Integer actualType) {
         String responseBody = actual;
         String expect = expected;
@@ -289,7 +296,10 @@ public class AssertUtil {
             return true;
         }
 
-        if (actualStr.contains(expectedStr)) {//实际值包含期望值
+        /*if (actualStr.contains(expectedStr)) {//实际值包含期望值
+            return true;
+        }*/
+        if (actualStr.equals(expectedStr)) {//实际值等于期望值
             return true;
         }
 
