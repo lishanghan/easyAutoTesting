@@ -145,6 +145,7 @@ public class HryHttpClientUtil {
             if (requestParamType.equals(RequestParamTypeEnum.JSON.getId())) {
                 config.json(param);
             } else if (requestParamType.equals(RequestParamTypeEnum.MAP.getId())) {
+                log.info("++++++++++++++");
                 Map map = JSON.parseObject(param, Feature.OrderedField).toJavaObject(Map.class);
                 config.map(map);
             }

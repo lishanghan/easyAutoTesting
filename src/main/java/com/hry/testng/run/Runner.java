@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.testng.IReporter;
 import org.testng.ITestNGListener;
 import org.testng.TestNG;
 import org.testng.xml.XmlClass;
@@ -27,6 +28,9 @@ import java.util.*;
 @Slf4j
 @Component
 public class Runner {
+
+    //获取当前类绝对路径
+    public  final  String path = IReporter.class.getClassLoader().getResource("").getPath();
 
     @Autowired
     ZdyProperty zdyProperty;
@@ -53,6 +57,23 @@ public class Runner {
         TestNG ng = new TestNG();
         ng.setUseDefaultListeners(false);
         ng.setXmlSuites(Arrays.asList(xmlSuite));
+
+        /*//复制测试报告所需要CSS和js文件到报告目录
+        String bPath = path + "static/static/hry-auto/";
+        log.info("源文件路径="+bPath);
+        File reportDir = new File(zdyProperty.getReportPath());
+        if (!reportDir.exists() && !reportDir.isDirectory()) {
+            reportDir.mkdir();
+        }
+        try {
+            FileUtil.copy(bPath,zdyProperty.getReportPath());
+            Thread.sleep(10000);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+
         ITestNGListener reporter = new HryReporter(zdyProperty.getReportPath(), reportName, customName);
         ng.addListener(reporter);
 
