@@ -30,7 +30,7 @@
     8.module-hryweb:springboot + mybatis框架,run Application启动项目  
     9.生成默认服务测试类：新建好服务、服务环境映射，接口候后，调用
         http://localhost:8885/autocode/generateTestClass?debug=true 接口
-        生成的文件存在本地C盘  
+        生成的文件存在本地C盘，将生成的测试类拷贝到项目src/main/java/hry/testng/test/路径下，重新打包部署  
     10.执行项目根目录下hry_auto.sql进行建库，默认登陆名：admin，密码：123456  
 
 
