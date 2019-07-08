@@ -419,7 +419,7 @@ CREATE TABLE `user` (
 
 /*Data for the table `user` */
 
-insert  into `user`(`id`,`groupId`,`identity`,`password`,`realname`,`status`,`remark`) values (1,1,'admin@legain.com','e10adc3949ba59abbe56e057f20f883e','admin',1,NULL)
+insert  into `user`(`id`,`groupId`,`identity`,`password`,`realname`,`status`,`remark`) values (1,11,'admin@legain.com','e10adc3949ba59abbe56e057f20f883e','admin',1,NULL)
 
 /*Table structure for table `user_hz_backup` */
 
