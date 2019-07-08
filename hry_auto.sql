@@ -2,7 +2,8 @@
 SQLyog Ultimate v12.09 (64 bit)
 MySQL - 5.5.40 : Database - hry_auto
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -416,6 +417,10 @@ CREATE TABLE `user` (
   UNIQUE KEY `unique` (`id`,`groupId`,`identity`,`password`,`realname`,`status`,`remark`)
 ) ENGINE=InnoDB AUTO_INCREMENT=194 DEFAULT CHARSET=utf8;
 
+/*Data for the table `user` */
+
+insert  into `user`(`id`,`groupId`,`identity`,`password`,`realname`,`status`,`remark`) values (1,1,'admin@legain.com','e10adc3949ba59abbe56e057f20f883e','admin',1,NULL)
+
 /*Table structure for table `user_hz_backup` */
 
 DROP TABLE IF EXISTS `user_hz_backup`;
@@ -458,10 +463,14 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `statisCaseOnInsert` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `statisCaseOnInsert` AFTER INSERT ON `tcase` FOR EACH ROW BEGIN
-DECLARE ccount INT;
-set ccount=(select count(id) from tcase where tcase.`iId`=new.`iId` and tcase.`status`>0);
-update ti set ti.`caseCount`=ccount where ti.`id`=new.`iId`;
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `statisCaseOnInsert` AFTER INSERT ON `tcase` FOR EACH ROW BEGIN
+
+DECLARE ccount INT;
+
+set ccount=(select count(id) from tcase where tcase.`iId`=new.`iId` and tcase.`status`>0);
+
+update ti set ti.`caseCount`=ccount where ti.`id`=new.`iId`;
+
 END */$$
 
 
@@ -473,10 +482,14 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `statisCaseOnUpdate` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `statisCaseOnUpdate` AFTER UPDATE ON `tcase` FOR EACH ROW BEGIN
-DECLARE ccount INT;
-set ccount=(select count(id) from tcase where tcase.`iId`=new.`iId` and tcase.`status`>0);
-update ti set ti.`caseCount`=ccount where ti.`id`=new.`iId`;
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `statisCaseOnUpdate` AFTER UPDATE ON `tcase` FOR EACH ROW BEGIN
+
+DECLARE ccount INT;
+
+set ccount=(select count(id) from tcase where tcase.`iId`=new.`iId` and tcase.`status`>0);
+
+update ti set ti.`caseCount`=ccount where ti.`id`=new.`iId`;
+
 END */$$
 
 
