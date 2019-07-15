@@ -12,6 +12,8 @@ import java.util.jar.JarFile;
 
 @Slf4j
 public class ClassUtil {
+    private static final String OS_NAME = System.getProperty("os.name");
+    private static final String OS_NAME_LC = OS_NAME.toLowerCase(java.util.Locale.ENGLISH);
 
     /**
      * @description: 根据包名获取所有类名(不包含子包)
@@ -63,9 +65,17 @@ public class ClassUtil {
             } else {
                 String childFilePath = childFile.getPath();
                 if (childFilePath.endsWith(".class")) {
-                    childFilePath = childFilePath.substring(childFilePath.indexOf("\\classes") + 9, childFilePath.lastIndexOf("."));
-                    childFilePath = childFilePath.replace("\\", ".");
-                    myClassName.add(childFilePath);
+                   if (OS_NAME_LC.startsWith("windows")) {
+                        /*fix linux系统下包名匹配错误问题 -lingshengjiang 20190715*/
+                        childFilePath = childFilePath.substring(childFilePath.indexOf("\\classes") + 9, childFilePath.lastIndexOf("."));
+                        childFilePath = childFilePath.replace("\\", ".");
+                        myClassName.add(childFilePath);
+
+                    }else {
+                        childFilePath = childFilePath.substring(childFilePath.indexOf("/classes") + 9, childFilePath.lastIndexOf("."));
+                        childFilePath = childFilePath.replace("/", ".");
+                        myClassName.add(childFilePath);
+                    }
                 }
             }
         }
