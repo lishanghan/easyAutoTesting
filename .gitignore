@@ -6,7 +6,7 @@ target
 test-output/
 testng.xml
 application-devUseProdDB.yml
-src/java/com/hry/testng/test
+*/src/java/com/hry/testng/test
 
 
 # Compiled class file
