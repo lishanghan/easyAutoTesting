@@ -49,6 +49,7 @@ hs_err_pid*
 *.iml
 *.ipr
 *.yml
+src/main/resources/*.yml
 
 ### NetBeans ###
 /nbproject/private/
@@ -57,3 +58,4 @@ hs_err_pid*
 /dist/
 /nbdist/
 /.nb-gradle/
+src/main/java/META-INF/
