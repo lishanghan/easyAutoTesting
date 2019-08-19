@@ -21,19 +21,19 @@ public class CrmDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/api/Account/StAccount", dataProvider = "provider", description = "客户列表搜索 不确定字段 线上交易开通状态 、身份认证 缺少字段 最近联系时间")
+    @Test(testName = "/api/Account/StAccount", dataProvider = "provider", description = "客户列表搜索不确定字段 线上交易开通状态 、身份认证缺少字段最近联系时间")
     public void api_Account_StAccount(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/api/Account/StAccountDetails", dataProvider = "provider", description = "客户-个人信息 不确定字段 是否事实客户、证件照片状态、是否信睿账户、风险评测有效期 缺少字段 年龄")
+    @Test(testName = "/api/Account/StAccountDetails", dataProvider = "provider", description = "客户-个人信息不确定字段 是否事实客户、证件照片状态、是否信睿账户、风险评测有效期 缺少字段 年龄")
     public void api_Account_StAccountDetails(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/api/Account/StAdvancedAccountDetails", dataProvider = "provider", description = "客户-获取客户高级信息 缺少字段 家庭年收入、职业")
+    @Test(testName = "/api/Account/StAdvancedAccountDetails", dataProvider = "provider", description = "客户-获取客户高级信息缺少字段 家庭年收入、职业")
     public void api_Account_StAdvancedAccountDetails(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
@@ -45,7 +45,7 @@ public class CrmDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/api/Account/UpdateAccount", dataProvider = "provider", description = "客户-更新客户-基本信息 缺少字段 家庭年收入")
+    @Test(testName = "/api/Account/UpdateAccount", dataProvider = "provider", description = "客户-更新客户-基本信息缺少字段 家庭年收入")
     public void api_Account_UpdateAccount(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
@@ -69,7 +69,7 @@ public class CrmDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/api/Product/StProduct", dataProvider = "provider", description = "产品-产品列表搜索 不确定字段 期限 缺少字段 预期收益率")
+    @Test(testName = "/api/Product/StProduct", dataProvider = "provider", description = "产品-产品列表搜索不确定字段 期限 缺少字段 预期收益率")
     public void api_Product_StProduct(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
@@ -77,6 +77,12 @@ public class CrmDefaultTest extends Base{
 
     @Test(testName = "/api/Product/StProductDetails", dataProvider = "provider", description = "产品-产品详情-基本信息")
     public void api_Product_StProductDetails(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/api/Remind/CreateRemind", dataProvider = "provider", description = "创建客户事件提醒")
+    public void api_Remind_CreateRemind(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -105,7 +111,7 @@ public class CrmDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/api/Subscribe/StSubscribe", dataProvider = "provider", description = "产品-预约列表 不确定字段 期限 = 截止日 ？ 、预约渠道 =  预约类型？、预约代码 = 预约编号？客户代码 = ? 客户Id？")
+    @Test(testName = "/api/Subscribe/StSubscribe", dataProvider = "provider", description = "产品-预约列表 不确定字段 期限 = 截止日 ？ 、预约渠道 =  预约类型？、预约代码 = 预约编号？ 客户代码 = ? 客户Id？")
     public void api_Subscribe_StSubscribe(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
@@ -123,7 +129,7 @@ public class CrmDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/api/Task/StAccountUpdateTask", dataProvider = "provider", description = "客户-事件提醒更新（待办事项） 缺少字段 客户代码、是否需要提醒、提醒时间")
+    @Test(testName = "/api/Task/StAccountUpdateTask", dataProvider = "provider", description = "客户-事件提醒更新（待办事项）缺少字段 客户代码、是否需要提醒、提醒时间")
     public void api_Task_StAccountUpdateTask(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);

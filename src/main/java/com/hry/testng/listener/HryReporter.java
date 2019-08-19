@@ -34,8 +34,6 @@ public class HryReporter implements IReporter {
     private String reportPath;//测试报告存入于服务器的位置 如:C:/testngReport/(windows环境下的存放地址)
     private String fileName;//测试报告访问的地址 如: report_u53_c14_20180723_151134.html   访问时前面加域名即可
     private String customName;//测试报告中的报告名称,一般传定制名称
-    //获取当前类绝对路径
-    //public String path = IReporter.class.getClassLoader().getResource("").getPath();
 
 
 
@@ -124,9 +122,6 @@ public class HryReporter implements IReporter {
             }
 
         }
-//        for (String s : Reporter.getOutput()) {
-//            extent.setTestRunnerOutput(s);
-//        }
 
         extent.flush();
     }
@@ -160,29 +155,19 @@ public class HryReporter implements IReporter {
                     e.printStackTrace();
                 }
             }else if(active.equals("prod")){
-                //path = path.substring(0, path.lastIndexOf('/') + 1);
-                //bPath = path + "static/static/hry-auto";
                 bPath = "static/static/hry-auto";
-                log.info("进来了+++++++");
                 FileUtil.loadRecourseFromJarByFolder(bPath,reportPath,HryReporter.class);
             }
 
             log.info("源文件路径="+path+bPath);
             log.info("目标路径："+reportPath);
 
-
-
-
-
         }
 
         ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(reportPath + fileName);
-        /*ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(OUTPUT_FOLDER + FILE_NAME);*/
         // 设置静态文件的DNS
         //怎么样解决cdn.rawgit.com访问不了的情况
         htmlReporter.config().setResourceCDN(ResourceCDN.EXTENTREPORTS);
-        //htmlReporter.config().set
-
         htmlReporter.config().setDocumentTitle("很容易自动化测试报告");
         if (StringUtils.isNotBlank(customName)) {
             htmlReporter.config().setReportName(customName);

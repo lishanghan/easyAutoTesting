@@ -145,7 +145,6 @@ public class HryHttpClientUtil {
             if (requestParamType.equals(RequestParamTypeEnum.JSON.getId())) {
                 config.json(param);
             } else if (requestParamType.equals(RequestParamTypeEnum.MAP.getId())) {
-                log.info("++++++++++++++");
                 Map map = JSON.parseObject(param, Feature.OrderedField).toJavaObject(Map.class);
                 config.map(map);
             }
@@ -265,10 +264,8 @@ public class HryHttpClientUtil {
             );
             // 发送soap xml格式数据
         }else if(contentType.equals("text/xml")){
-            //String url=test.getTi().getIuri();
             String url = HttpTypeEnum.getValue(test.getTservice().getHttptype()) + "://" + test.getTservicedetail().getHostinfo() + test.getTi().getIuri();
             String soapAction = test.getTi().getSoapAction();
-            //String xml = test.getTcase().getRequestparam();
             String xml = param;
             responseBody = soapXmlSend(url,xml,soapAction);
 
@@ -283,7 +280,6 @@ public class HryHttpClientUtil {
         log.info("---3.后置处理-开始");
         ReplaceUtil.replaceAfter(test.getTcase().getCafter(), responseBody, test.getTservicedetail().getDbinfo(), entity);
         log.info("---3.后置处理-结束");
-//        log.info("+++++++++++++++++++++++++++++++++++++");
         return responseBody;
 
     }
@@ -372,15 +368,7 @@ public class HryHttpClientUtil {
         return send(url, RequestMethodTypeEnum.GET.getId(), null, null, null);
     }
 
-/*    private static <T extends Base> String replaceParam(String param, String dbInfo, T entity) {
-        if (StringUtils.isNotBlank(param)) {
-            Reporter.log("用例设计参数:" + param.replaceAll("<", "＜").replaceAll(">", "＞"));
-            param = ReplaceUtil.replace(param, dbInfo, entity);
-        } else {
-            Reporter.log("用例设计参数:null");
-        }
-        return param;
-    }*/
+
     /**
      * 使用SOAP1.1发送消息
      *

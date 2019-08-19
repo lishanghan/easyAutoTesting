@@ -100,7 +100,6 @@ public class Runner {
 
             XmlTest test = new XmlTest(suite);
             test.setName(key.getClientname());
-            //test.setName("test.setName 测试测试");
             test.setXmlClasses(Arrays.asList(clazz));
 
             tests.add(test);
