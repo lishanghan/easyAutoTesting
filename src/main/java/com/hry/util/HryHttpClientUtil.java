@@ -344,11 +344,8 @@ public class HryHttpClientUtil {
         String serviceKey = test.getTservice().getServicekey();
         String iUri = test.getTi().getIuri();
         if(serviceKey.equalsIgnoreCase("Gateway") && iUri.equalsIgnoreCase("/user/unsecretlogin") == false){
-            System.out.println("进来了！");
             JSONObject headerJSON = JSONUtil.str2JSONObj(gatewayCookie);
-            if (headerJSON != null && headerJSON.size() > 0) {
-                requestHeaderMap = headerJSON.toJavaObject(Map.class);
-            }
+            requestHeaderMap = headerJSON.toJavaObject(Map.class);
 
         }else{
             String headerStr = test.getTcase().getRequestheader();
