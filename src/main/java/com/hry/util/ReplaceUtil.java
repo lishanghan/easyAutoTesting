@@ -44,6 +44,7 @@ public class ReplaceUtil {
      * 自动将参数中符合BeforeRegexEnum匹配规则的字符串替换
      */
     public static <T extends Base> String replaceBefore(String base, String dbinfo, T entity) {
+
         if (StringUtils.isNotBlank(base)) {
             Reporter.log("用例设计参数:" + base.replaceAll("<", "＜").replaceAll(">", "＞"));
             log.info("用例设计参数:" + base);
@@ -60,6 +61,7 @@ public class ReplaceUtil {
     }
 
     public static <T extends Base> void replaceAfter(String base, String responseBody, String dbinfo, T entity) {
+
         if (StringUtils.isBlank(base)) {
             return;
         }
@@ -583,6 +585,7 @@ public class ReplaceUtil {
         }
         return base;
     }
+
 
     public static <T extends Base> String replaceGet(String base, T entity) {
         Pattern pattern = Pattern.compile(ReplaceRegexEnum.GET.getPattern());

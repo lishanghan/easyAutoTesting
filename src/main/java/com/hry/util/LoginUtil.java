@@ -2,10 +2,14 @@ package com.hry.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.arronlong.httpclientutil.HttpClientUtil;
+import com.arronlong.httpclientutil.builder.HCB;
 import com.arronlong.httpclientutil.common.HttpConfig;
+import com.arronlong.httpclientutil.common.HttpMethods;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.hry.anno.SKey;
 import com.hry.config.SpringContextHolder;
+import com.hry.config.ZdyProperty;
+import com.hry.enums.ContentTypeEnum;
 import com.hry.po.*;
 import com.hry.service.TcaseService;
 import com.hry.service.TiService;
@@ -15,6 +19,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.client.CookieStore;
+import org.apache.http.client.HttpClient;
 import org.apache.http.cookie.SetCookie;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.cookie.BasicClientCookie;
@@ -45,7 +50,96 @@ public class LoginUtil {
             unionLogin(entity, "cbp");
             return;
         }
+        /*if ("Gateway".equalsIgnoreCase(sKey)){
+            gatewayLogin(entity,"/user/unsecretlogin");
+        }*/
     }
+
+
+
+    /**
+     * gateway 登陆
+     * */
+   /* public static <T extends Base> void gatewayLogin(T entity, String iUri) {
+
+
+        Tservicedetail tservicedetail = entity.tservicedetail;
+        TiService tiService = SpringContextHolder.getBean(TiService.class);
+        Ti tiCondition = new Ti();
+        tiCondition.setServiceid(tservicedetail.getServiceid());
+        tiCondition.setIuri(iUri);
+        List<Ti> tis = tiService.selectByCondition(tiCondition);
+
+        //判断不是登陆接口才执行
+        Ti ti = null;
+        for (Ti i : tis) {
+            System.out.println("对比结果=" + i.getIuri().equals(iUri));
+            if (i.getIuri().equals(iUri) == true) {
+                System.out.println("接口地址=" + i.getIuri());
+
+                String url = "http://192.168.52.26:8000/mmp/user/unsecretlogin";
+                HttpMethods methodType = HttpMethods.POST;
+                Header header = new BasicHeader("Content-Type", "application/json");
+                Header[] requestHeaders = null;
+                requestHeaders = ArrayUtils.add(requestHeaders, header);
+                String param = "{\n" +
+                        "  \"brokerCode\": \"18836\",\n" +
+                        "  \"deviceId\": \"1123123123132132\",\n" +
+                        "  \"fullName\": \"刘杰\",\n" +
+                        "  \"password\": \"1234.com\",\n" +
+                        "  \"username\": \"Liujie\"\n" +
+                        "}";
+
+                HCB hcb = null;
+                try {
+                    hcb = HCB.custom()
+                            .pool(100, 10)
+                            .timeout(30 * 1000, false);//30秒超时设置,阻止自动重定向
+                    HttpClient client = hcb.build();
+                    HttpConfig config = HttpConfig
+                            .custom()
+                            .url(url)
+                            .encoding("utf-8")
+                            .method(methodType)
+                            .headers(requestHeaders)
+                            .client(client);
+                    config.json(param);
+                    String responseEntity =HttpClientUtil.send(config);
+                    Header[] resHeaders = config.headers();
+                    for (Header h : resHeaders) {
+                        System.out.println("进来了！");
+                        System.out.println("Set-Coolie:" + h);
+
+                    *//*if (h.getName().equals("Set-Cookie")) {
+                        System.out.println("进来了！");
+                        System.out.println("Set-Coolie:" + h);
+                        HeaderElement[] elements = h.getElements();
+                        String name = elements[0].getName();
+                        String value = elements[0].getValue();
+                        System.out.println("response-cookie的name:" + name + ",value:" + value);
+                        SetCookie cookie = new BasicClientCookie(name, value);
+                        *//**//*cookie.setDomain(domain);
+                        cookie.setPath("/");*//**//*
+
+                        CookieStore cookieStor = new BasicCookieStore();
+                        cookieStor.addCookie(cookie);
+
+                        System.out.println("cookieStore:" + cookieStor);
+                        entity.cookieStore = cookieStor;
+                    }*//*
+
+
+                    }
+                } catch (HttpProcessException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+
+
+        }
+    }*/
 
     /**
      * zhuanle 登录
@@ -179,10 +273,8 @@ public class LoginUtil {
                 String name = elements[0].getName();
                 String value = elements[0].getValue();
                 SetCookie cookie = new BasicClientCookie(name, value);
-//                NameValuePair domain = elements[0].getParameterByName("Domain");
                 cookie.setDomain(domain);
                 cookie.setPath("/");
-
                 cookieStore = new BasicCookieStore();
                 cookieStore.addCookie(cookie);
                 break;

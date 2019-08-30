@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
+import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
@@ -25,13 +26,15 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.cookie.SetCookie;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 import org.testng.Reporter;
-
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -49,6 +52,8 @@ public class HryHttpClientUtil {
     private static Boolean debugFlag;
 
     private static HCB hcb;
+
+    private static String gatewayCookie;
 
     static {
         ZdyProperty bean = SpringContextHolder.getBean(ZdyProperty.class);
@@ -116,9 +121,10 @@ public class HryHttpClientUtil {
         }
 
         //HryCookie
-        HttpClientContext context = null;
+        //HttpClientContext context = null;
+        HttpClientContext context = new HttpClientContext();
         if (cookieStore != null) {
-            context = new HttpClientContext();
+            //context = new HttpClientContext();
             context.setCookieStore(cookieStore);
         }
 
@@ -151,16 +157,28 @@ public class HryHttpClientUtil {
         }
 
         //发送请求
-        String responseEntity;
+        String responseEntity = null;
         long startTime = System.currentTimeMillis();
         try {
             responseEntity = HttpClientUtil.send(config);
-            //如果返回Headers中存在 location,则认为是重定向,将location的值返回
+
             Header[] resHeaders = config.headers();
             for (Header h : resHeaders) {
+
+                if (url.contains("/user/unsecretlogin") && h.getName().equalsIgnoreCase("Set-Cookie")) {
+                    HeaderElement[] elements = h.getElements();
+                    String name = elements[0].getName();
+                    String value = elements[0].getValue();
+                    Map<String,String> map = new HashMap<String,String>();
+                    map.put("Cookie",name+"="+value);
+                    gatewayCookie = JSONObject.toJSONString(map);
+
+                }
+
+                //如果返回Headers中存在 location,则认为是重定向,将location的值返回
                 if (h.getName().equalsIgnoreCase("location")) {
                     if (StringUtils.isBlank(responseEntity)) {
-                        responseEntity = h.getValue();
+                         responseEntity = h.getValue();
                         JSONObject jsonObject = new JSONObject();
                         jsonObject.put("location", responseEntity);
                         responseEntity = jsonObject.toJSONString();
@@ -323,13 +341,25 @@ public class HryHttpClientUtil {
 
     public static Map<String, String> getHeadersFromCase(HryTest test) {
         Map<String, String> requestHeaderMap = null;
-        String headerStr = test.getTcase().getRequestheader();
-        if (StringUtils.isNotBlank(headerStr)) {
-            JSONObject headerJSON = JSONUtil.str2JSONObj(headerStr);
+        String serviceKey = test.getTservice().getServicekey();
+        String iUri = test.getTi().getIuri();
+        if(serviceKey.equalsIgnoreCase("Gateway") && iUri.equalsIgnoreCase("/user/unsecretlogin") == false){
+            System.out.println("进来了！");
+            JSONObject headerJSON = JSONUtil.str2JSONObj(gatewayCookie);
             if (headerJSON != null && headerJSON.size() > 0) {
                 requestHeaderMap = headerJSON.toJavaObject(Map.class);
             }
+
+        }else{
+            String headerStr = test.getTcase().getRequestheader();
+            if (StringUtils.isNotBlank(headerStr)) {
+                JSONObject headerJSON = JSONUtil.str2JSONObj(headerStr);
+                if (headerJSON != null && headerJSON.size() > 0) {
+                    requestHeaderMap = headerJSON.toJavaObject(Map.class);
+                }
+            }
         }
+
         return requestHeaderMap;
     }
 
