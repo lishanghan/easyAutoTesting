@@ -291,7 +291,7 @@ public class GatewayDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/apis/main/schedule/activity/finish/batch", dataProvider = "provider", description = "完成日程")
+    @Test(testName = "/apis/main/schedule/activity/finish/batch", dataProvider = "provider", description = "批量完成日程")
     public void apis_main_schedule_activity_finish_batch(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
@@ -333,7 +333,7 @@ public class GatewayDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/apis/main/schedule/remind/finish/batch", dataProvider = "provider", description = "完成提醒")
+    @Test(testName = "/apis/main/schedule/remind/finish/batch", dataProvider = "provider", description = "批量完成提醒")
     public void apis_main_schedule_remind_finish_batch(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
@@ -341,6 +341,12 @@ public class GatewayDefaultTest extends Base{
 
     @Test(testName = "/user/unsecretlogin", dataProvider = "provider", description = "用户登录非加密")
     public void user_unsecretlogin(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/virtual/sql", dataProvider = "provider", description = "虚拟接口执行sql语句")
+    public void virtual_sql(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }

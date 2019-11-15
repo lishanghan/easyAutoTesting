@@ -15,37 +15,31 @@ public class MmpDefaultTest extends Base{
         super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
     }
 
-    @Test(testName = "/business/appoint/add", dataProvider = "provider", description = "产品预约 创建预约")
+    @Test(testName = "/business/appoint/add", dataProvider = "provider", description = "产品预约 创建预约 ✔✔✔")
     public void business_appoint_add(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/business/appoint/cancel", dataProvider = "provider", description = "取消预约")
+    @Test(testName = "/business/appoint/cancel", dataProvider = "provider", description = "取消预约 ✔✔✔")
     public void business_appoint_cancel(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/business/appoint/finish", dataProvider = "provider", description = "完成预约")
-    public void business_appoint_finish(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/business/appoint/update", dataProvider = "provider", description = "修改预约")
+    @Test(testName = "/business/appoint/update", dataProvider = "provider", description = "修改预约 ✔✔✔")
     public void business_appoint_update(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/business/appoints", dataProvider = "provider", description = "查询客户经理下客户的预约列表")
+    @Test(testName = "/business/appoints", dataProvider = "provider", description = "查询客户经理下客户的预约列表 ✔✔✔")
     public void business_appoints(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/business/order", dataProvider = "provider", description = "客户订单查询")
+    @Test(testName = "/business/order", dataProvider = "provider", description = "二期功能，包括机构客户订单查询")
     public void business_order(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
@@ -69,7 +63,7 @@ public class MmpDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/business/trade", dataProvider = "provider", description = "客户确认交易查询")
+    @Test(testName = "/business/trade", dataProvider = "provider", description = "客户确认交易查询 ✔✔✔")
     public void business_trade(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
@@ -87,37 +81,37 @@ public class MmpDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/add", dataProvider = "provider", description = "创建客户")
+    @Test(testName = "/customer/add", dataProvider = "provider", description = "创建客户 ✔✔✔")
     public void customer_add(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/addWithRelation", dataProvider = "provider", description = "新增客户和关系")
+    @Test(testName = "/customer/addWithRelation", dataProvider = "provider", description = "新增客户和客户关系 ✔✔✔")
     public void customer_addWithRelation(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/advancedInfo", dataProvider = "provider", description = "查询客户高级信息")
+    @Test(testName = "/customer/advancedInfo", dataProvider = "provider", description = "查询客户高级信息 dataId=客户ID ✔✔✔")
     public void customer_advancedInfo(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/advancedInfo/modify", dataProvider = "provider", description = "修改客户高级信息")
+    @Test(testName = "/customer/advancedInfo/modify", dataProvider = "provider", description = "修改客户高级信息 ✔✔✔")
     public void customer_advancedInfo_modify(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/appoints", dataProvider = "provider", description = "查询客户的预约列表")
+    @Test(testName = "/customer/appoints", dataProvider = "provider", description = "查询客户的预约列表 ✔✔✔")
     public void customer_appoints(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/assets", dataProvider = "provider", description = "查询客户资产汇总信息")
+    @Test(testName = "/customer/assets", dataProvider = "provider", description = "查询客户资产汇总信息 ✔✔✔")
     public void customer_assets(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
@@ -129,20 +123,14 @@ public class MmpDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/detail", dataProvider = "provider", description = "查询客户详细信息-非json格式参数")
+    @Test(testName = "/customer/detail", dataProvider = "provider", description = "查询客户详细信息 dataId=客户编号 ✔✔✔")
     public void customer_detail(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/expiredAssets", dataProvider = "provider", description = "查询客户到期资产")
+    @Test(testName = "/customer/expiredAssets", dataProvider = "provider", description = "查询客户到期资产 ✔✔✔")
     public void customer_expiredAssets(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/customer/fund/disclosureFile", dataProvider = "provider", description = "信息披露文件下载")
-    public void customer_fund_disclosureFile(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -153,44 +141,26 @@ public class MmpDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/getCrmAccountId", dataProvider = "provider", description = "根据理财账号获取CRM的客户ID（accountId）")
+    @Test(testName = "/customer/getCrmAccountId", dataProvider = "provider", description = "根据理财账号获取CRM的客户ID（accountId） ✔✔✔")
     public void customer_getCrmAccountId(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/label/modify", dataProvider = "provider", description = "修改客户标签")
+    @Test(testName = "/customer/label/modify", dataProvider = "provider", description = "修改客户标签 ✔✔✔")
     public void customer_label_modify(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/listCrm", dataProvider = "provider", description = "通过接口查询CRM系统客户经理名下客户列表，支持筛选")
+    @Test(testName = "/customer/listCrm", dataProvider = "provider", description = "通过接口查询CRM系统客户经理名下客户列表，支持筛选 ✔✔✔")
     public void customer_listCrm(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/listTotalCrm", dataProvider = "provider", description = "通过接口查询CRM系统所有客户列表")
-    public void customer_listTotalCrm(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/customer/online/open", dataProvider = "provider", description = "开通线上交易，暂不开发")
-    public void customer_online_open(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/customer/relation/add", dataProvider = "provider", description = "新增客户关系")
+    @Test(testName = "/customer/relation/add", dataProvider = "provider", description = "新增客户关系 ✔✔✔")
     public void customer_relation_add(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/customer/searchCrm", dataProvider = "provider", description = "根据客户姓名搜索CRM系统客户，支持筛选")
-    public void customer_searchCrm(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -201,7 +171,7 @@ public class MmpDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customer/unencryptdetail", dataProvider = "provider", description = "查询客户详细信息 dataId=客户编号")
+    @Test(testName = "/customer/unencryptdetail", dataProvider = "provider", description = "查询客户详细信息 dataId=客户编号 ✔✔✔")
     public void customer_unencryptdetail(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
@@ -209,18 +179,6 @@ public class MmpDefaultTest extends Base{
 
     @Test(testName = "/customer/video/list", dataProvider = "provider", description = "查询客户视频请求记录")
     public void customer_video_list(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/device/list", dataProvider = "provider", description = "查询白名单设备列表")
-    public void device_list(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/device/update", dataProvider = "provider", description = "查询白名单设备列表")
-    public void device_update(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -237,7 +195,7 @@ public class MmpDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/fund/detail", dataProvider = "provider", description = "获取产品信息")
+    @Test(testName = "/fund/detail", dataProvider = "provider", description = "获取产品基本信息（不包括标题信息），已对接")
     public void fund_detail(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
@@ -249,14 +207,26 @@ public class MmpDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/fund/list/crm", dataProvider = "provider", description = "查询CRM产品列表")
+    @Test(testName = "/fund/fundBaseInfo", dataProvider = "provider", description = "获取产品基础信息,整合接口")
+    public void fund_fundBaseInfo(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/fund/list/crm", dataProvider = "provider", description = "获取CRM产品列表,已对接")
     public void fund_list_crm(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/fund/onsale/list", dataProvider = "provider", description = "查询在售产品列表")
+    @Test(testName = "/fund/onsale/list", dataProvider = "provider", description = "获取在售产品列表，已对接")
     public void fund_onsale_list(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/fund/recommend", dataProvider = "provider", description = "获取产品明细-一键荐客")
+    public void fund_recommend(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -267,7 +237,7 @@ public class MmpDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/mainPage/device", dataProvider = "provider", description = "记录设备ID，返回MD5-非json参数")
+    @Test(testName = "/mainPage/device", dataProvider = "provider", description = "记录设备ID，返回MD5")
     public void mainPage_device(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
@@ -279,49 +249,13 @@ public class MmpDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/mainPage/dict2", dataProvider = "provider", description = "数据字典查询接口2")
-    public void mainPage_dict2(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
     @Test(testName = "/mainPage/image", dataProvider = "provider", description = "主页-用户头像")
     public void mainPage_image(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/mainPage/label/add", dataProvider = "provider", description = "新增自定义客户标签")
-    public void mainPage_label_add(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/mainPage/label/delete", dataProvider = "provider", description = "删除自定义客户标签")
-    public void mainPage_label_delete(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/mainPage/labels", dataProvider = "provider", description = "查询自定义客户标签")
-    public void mainPage_labels(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/mainPage/notice", dataProvider = "provider", description = "主页-通知列表-暂不开发")
-    public void mainPage_notice(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/mainPage/user/online", dataProvider = "provider", description = "查询在线用户")
-    public void mainPage_user_online(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/mainPage/version", dataProvider = "provider", description = "主页版本信息-非json参数")
+    @Test(testName = "/mainPage/version", dataProvider = "provider", description = "主页-版本信息")
     public void mainPage_version(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
@@ -345,7 +279,7 @@ public class MmpDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/schedule/activity/active", dataProvider = "provider", description = "激活日程")
+    @Test(testName = "/schedule/activity/active", dataProvider = "provider", description = "激活日程 ✔✔✔")
     public void schedule_activity_active(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
@@ -363,13 +297,13 @@ public class MmpDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/schedule/activity/finish", dataProvider = "provider", description = "完成日程")
+    @Test(testName = "/schedule/activity/finish", dataProvider = "provider", description = "完成日程 ✔✔✔")
     public void schedule_activity_finish(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/schedule/activity/finish/batch", dataProvider = "provider", description = "完成日程")
+    @Test(testName = "/schedule/activity/finish/batch", dataProvider = "provider", description = "完成日程 ✔✔✔")
     public void schedule_activity_finish_batch(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
@@ -381,7 +315,7 @@ public class MmpDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/schedule/add", dataProvider = "provider", description = "新增待办事项：日程")
+    @Test(testName = "/schedule/add", dataProvider = "provider", description = "新增待办事项：日程 ✔✔✔")
     public void schedule_add(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
@@ -393,38 +327,152 @@ public class MmpDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/schedule/detail", dataProvider = "provider", description = "待办事项明细")
-    public void schedule_detail(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/schedule/list", dataProvider = "provider", description = "待办事项列表")
+    @Test(testName = "/schedule/list", dataProvider = "provider", description = "待办事项列表 ✔✔✔")
     public void schedule_list(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/schedule/listDate", dataProvider = "provider", description = "主页-月历视图-月历上有待办事项的日期")
+    @Test(testName = "/schedule/listDate", dataProvider = "provider", description = "主页-月历视图-月历上有代办事项的日期")
     public void schedule_listDate(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/schedule/remind/active", dataProvider = "provider", description = "激活提醒")
-    public void schedule_remind_active(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/schedule/remind/finish", dataProvider = "provider", description = "完成提醒")
+    @Test(testName = "/schedule/remind/finish", dataProvider = "provider", description = "完成提醒 ✔✔✔")
     public void schedule_remind_finish(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/schedule/remind/finish/batch", dataProvider = "provider", description = "完成提醒")
+    @Test(testName = "/schedule/remind/finish/batch", dataProvider = "provider", description = "完成提醒 ✔✔✔")
     public void schedule_remind_finish_batch(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/v2/customer/city/list", dataProvider = "provider", description = "城市列表，二期新增接口")
+    public void v2_customer_city_list(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/v2/customer/demand/delete", dataProvider = "provider", description = "删除投资需求")
+    public void v2_customer_demand_delete(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/v2/customer/demand/insert", dataProvider = "provider", description = "新增投资需求")
+    public void v2_customer_demand_insert(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/v2/customer/demand/query", dataProvider = "provider", description = "新增投资需求")
+    public void v2_customer_demand_query(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/v2/customer/demand/update", dataProvider = "provider", description = "更新投资需求")
+    public void v2_customer_demand_update(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/v2/customer/description", dataProvider = "provider", description = "查询客户详细信息，二期新增接口")
+    public void v2_customer_description(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/v2/customer/experience/update", dataProvider = "provider", description = "更新过往投资经验")
+    public void v2_customer_experience_update(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/v2/customer/importantDay/delete", dataProvider = "provider", description = "删除纪念日")
+    public void v2_customer_importantDay_delete(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/v2/customer/importantDay/insert", dataProvider = "provider", description = "新增纪念日")
+    public void v2_customer_importantDay_insert(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/v2/customer/importantDay/query", dataProvider = "provider", description = "查询纪念日")
+    public void v2_customer_importantDay_query(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/v2/customer/importantDay/query/first", dataProvider = "provider", description = "查询最近的纪念日")
+    public void v2_customer_importantDay_query_first(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/v2/customer/importantDay/update", dataProvider = "provider", description = "更新纪念日")
+    public void v2_customer_importantDay_update(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/v2/customer/interest/update", dataProvider = "provider", description = "更新兴趣")
+    public void v2_customer_interest_update(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/v2/customer/outline/update", dataProvider = "provider", description = "更新消费/投资概要")
+    public void v2_customer_outline_update(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/v2/customer/relation/delete", dataProvider = "provider", description = "删除客户关系 ✔✔✔")
+    public void v2_customer_relation_delete(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/v2/customer/relation/query", dataProvider = "provider", description = "删除客户关系 ✔✔✔")
+    public void v2_customer_relation_query(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/v2/customer/relation/update", dataProvider = "provider", description = "更新客户关系 ✔✔✔")
+    public void v2_customer_relation_update(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/v2/customer/social/update", dataProvider = "provider", description = "更新社会属性")
+    public void v2_customer_social_update(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/v2/customer/summary/update", dataProvider = "provider", description = "更新摘要")
+    public void v2_customer_summary_update(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/v2/customer/update", dataProvider = "provider", description = "更新客户基础信息，二期新增接口")
+    public void v2_customer_update(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/virtual/sql", dataProvider = "provider", description = "虚拟接口执行sql语句")
+    public void virtual_sql(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
