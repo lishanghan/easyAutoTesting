@@ -19,7 +19,7 @@
     <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
     <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
     <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
-    <link rel="stylesheet" type="text/css" href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.css" />
+    <!--<link rel="stylesheet" type="text/css" href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.css" />-->
 
     <!--[if IE 6]-->
     <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
@@ -96,15 +96,26 @@
             <label class="form-label col-xs-4 col-sm-3">请求参数类型：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
-                    <select class="select" size="1" name="iparamtype" id="iparamtype">
+                    <select class="select" size="1" name="iparamtype" id="iparamtype" onchange="request1()">
                     </select>
 				</span>
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">请求参数示例：</label>
-            <div class="formControls col-xs-8 col-sm-9">
+            <div id="request1" class="formControls col-xs-8 col-sm-9">
                 <textarea id="iparamsample" name="iparamsample" cols="" rows="" class="textarea valid" placeholder="请输入示例参数..."></textarea>
+            </div>
+            <div id="paramInput1" class="formControls col-xs-8 col-sm-9" hidden>
+                <table id="paramTable" style="width: 86%;">
+                    <tr>
+                        <td style="width: 30%;"><input type="text" class="input-text" value="" placeholder="key" id="key1" name="key1"></td>
+                        <td style="width: 55%;">
+                            <input type="text" class="input-text" value="" placeholder="value" id="value1" name="value1">
+                            <a href="javascript:;" onclick="addInput()"><i class="Hui-iconfont">&#xe600;</i></a>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
         <div class="row cl">
@@ -319,6 +330,41 @@
 
     });
 
+    //根据请求参数类型判断请求参数实例展示方式
+    function request1(){
+        var iparamtype = $("#iparamtype").val();
+        if(iparamtype == 2){
+            document.getElementById("request1").style.display = "none";
+            document.getElementById("paramInput1").style.display = "block";
+        }else{
+            document.getElementById("request1").style.display = "block";
+            document.getElementById("paramInput1").style.display = "none";
+        }
+
+    }
+
+    //请求参数实例动态增加输入框处理
+    function addInput(){
+        var rows=document.getElementById("paramTable").rows.length;
+        var row=rows+1;
+        var html="<tr id='tr"+row+"'>\n" +
+            "                        <td style='width: 30%'><input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"key\" id=\"key"+row+"\" name=\"key"+row+"\"></td>\n" +
+            "                        <td style='width: 55%;'>\n" +
+            "                            <input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"value\" id=\"value"+row+"\" name=\"value"+row+"\">\n" +
+            "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a><a href='javascript:;' onclick='clearInput("+row+")'><i class=\"Hui-iconfont\">&#xe6a1;</i></a>\n" +
+            "                        </td>\n" +
+            "                    </tr>";
+
+        $("#paramTable").append(html);
+
+    }
+
+    //动态减少输入框处理
+    function clearInput(row){
+        document.getElementById("tr"+row).remove();
+
+    }
+
     //添加接口
     function addTi(){
         var serviceid = $("#serviceid").val();
@@ -329,7 +375,34 @@
         var iheadersample= $("#iheadersample").val();
         var icontenttype = $("#icontenttype").val();
         var iparamtype = $("#iparamtype").val();
-        var iparamsample = $("#iparamsample").val();
+        var iparamsample;
+        if(iparamtype == 2){
+
+            var table=document.getElementById("paramTable");
+            var rows=table.rows;
+            var json;
+
+            json = "{";
+            for(i=0;i<rows.length;i++){
+                var rowList=rows[i].getElementsByTagName("input");
+                if(rowList[0].value.length>0 || rowList[1].value.length>0){
+                    var key=rowList[0].value;
+                    var value=rowList[1].value;
+                    json+='\"'+key+'\"'+':\"'+value+'\",';
+                }
+
+            }
+            if(json.length>1){
+                json = json.substring(0, json.length-1);
+            }
+
+            json+="}";
+            iparamsample=json;
+
+        }else{
+            iparamsample = $("#iparamsample").val();
+        }
+
         var iresponsetype = $("#iresponsetype").val();
         var idev = $("#idev").val();
 

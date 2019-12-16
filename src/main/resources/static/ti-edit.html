@@ -229,17 +229,93 @@
                     }
 
                     var iparamsample = list.iparamsample;
-                    if (iparamsample == null) {
-                        iparamsample = "";
-                    } else {
-                        if (iparamtype == 1) {
-                            try {
-                                var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
-                                iparamsample = requestJson;
-                            } catch (e) {
+                    var iparamsampleHtml="";
+                    var inputHtml="";
+                    if(iparamtype == 2){
+                        if(iparamsample == '{}'){
+                            inputHtml = "<tr id='tr1'>\n" +
+                                "                        <td style='width: 30%'><input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"key\" id=\"key1\" name=\"key1\"></td>\n" +
+                                "                        <td style='width: 55%;'>\n" +
+                                "                            <input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"value\" id=\"value1\" name=\"value1\">\n" +
+                                "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a>\n" +
+                                "                        </td>\n" +
+                                "                    </tr>";
+
+                        }else{
+                            var iparamDemo=JSON.parse(iparamsample);
+                            var num=0;
+                            for(var key in iparamDemo){
+                                num++;
+                                if(num == 1){
+                                    inputHtml+="<tr id='tr"+num+"'>\n" +
+                                        "                        <td style='width: 30%'><input type=\"text\" class=\"input-text\" value=\""+key+"\" placeholder=\"key\" id=\"key"+num+"\" name=\"key"+num+"\"></td>\n" +
+                                        "                        <td style='width: 55%;'>\n" +
+                                        "                            <input type=\"text\" class=\"input-text\" value=\""+iparamDemo[key]+"\" placeholder=\"value\" id=\"value"+num+"\" name=\"value"+num+"\">\n" +
+                                        "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a><a href='javascript:;' onclick='clearInput("+num+")'></a>\n" +
+                                        "                        </td>\n" +
+                                        "                    </tr>";
+                                }else{
+                                    inputHtml+="<tr id='tr"+num+"'>\n" +
+                                        "                        <td style='width: 30%'><input type=\"text\" class=\"input-text\" value=\""+key+"\" placeholder=\"key\" id=\"key"+num+"\" name=\"key"+num+"\"></td>\n" +
+                                        "                        <td style='width: 55%;'>\n" +
+                                        "                            <input type=\"text\" class=\"input-text\" value=\""+iparamDemo[key]+"\" placeholder=\"value\" id=\"value"+num+"\" name=\"value"+num+"\">\n" +
+                                        "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a><a href='javascript:;' onclick='clearInput("+num+")'><i class=\"Hui-iconfont\">&#xe6a1;</i></a>\n" +
+                                        "                        </td>\n" +
+                                        "                    </tr>";
+                                }
+
+
+                            }
+
+                        }
+
+                        iparamsampleHtml="<div class=\"row cl\">\n" +
+                            "               <label class=\"form-label col-xs-4 col-sm-3\">请求参数示例：</label>\n" +
+                            "               <div id=\"request1\" class=\"formControls col-xs-8 col-sm-9\" hidden>\n" +
+                            "                   <textarea id=\"iparamsample\" name=\"iparamsample\" cols=\"\" rows=\"\" class=\"textarea valid\" placeholder=\"请输入示例参数...\"></textarea>\n" +
+                            "               </div>\n" +
+                            "               <div id=\"paramInput1\" class=\"formControls col-xs-8 col-sm-9\">\n" +
+                            "                   <table id=\"paramTable\" style=\"width: 86%;\">\n" +
+                                                    inputHtml +"\n"+
+                            "                   </table>\n" +
+                            "               </div>\n" +
+                            "             </div>";
+
+
+
+                    }else{
+
+                        iparamsampleHtml="<div class=\"row cl\">\n" +
+                            "            <label class=\"form-label col-xs-4 col-sm-3\">请求参数示例：</label>\n" +
+                            "            <div id=\"request1\" class=\"formControls col-xs-8 col-sm-9\">\n" +
+                            "                <textarea id=\"iparamsample\" name=\"iparamsample\" cols=\"\" rows=\"\" class=\"textarea valid\" placeholder=\"请输入示例参数...\">"+iparamsample+"</textarea>\n" +
+                            "            </div>\n" +
+                            "           <div id=\"paramInput1\" class=\"formControls col-xs-8 col-sm-9\" hidden>\n" +
+                            "                <table id=\"paramTable\" style=\"width: 86%;\">\n" +
+                            "                    <tr>\n" +
+                            "                        <td style=\"width: 30%;\"><input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"key\" id=\"key1\" name=\"key1\"></td>\n" +
+                            "                        <td style=\"width: 55%;\">\n" +
+                            "                            <input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"value\" id=\"value1\" name=\"value1\">\n" +
+                            "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a>\n" +
+                            "                        </td>\n" +
+                            "                    </tr>\n" +
+                            "                </table>\n" +
+                            "            </div>\n" +
+                            "        </div>\n";
+
+                        if (iparamsample == null) {
+                            iparamsample = "";
+                        } else {
+                            if (iparamtype == 1) {
+                                try {
+                                    var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
+                                    iparamsample = requestJson;
+                                } catch (e) {
+                                }
                             }
                         }
                     }
+
                     var iresponsetype = list.iresponsetype;
                     var idev = list.idev;
                     var services = getService();
@@ -377,18 +453,13 @@
                         "            <label class=\"form-label col-xs-4 col-sm-3\">请求参数类型：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
                         "                <span class=\"select-box\">\n" +
-                        "                    <select class=\"select\" size=\"1\" name=\"iparamtype\" id=\"iparamtype\">\n" +
-                        "                        " + paramType + "" +
+                        "                    <select class=\"select\" size=\"1\" name=\"iparamtype\" id=\"iparamtype\" onchange=\"request1()\">\n" +
+                        "                        " + paramType + "\n" +
                         "                    </select>\n" +
                         "                </span>\n" +
                         "            </div>\n" +
                         "        </div>\n" +
-                        "        <div class=\"row cl\">\n" +
-                        "            <label class=\"form-label col-xs-4 col-sm-3\">请求参数示例：</label>\n" +
-                        "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
-                        "                <textarea id=\"iparamsample\" name=\"iparamsample\" cols=\"\" rows=\"\" class=\"textarea valid\" placeholder=\"请输入示例参数...\">" + iparamsample + "</textarea>\n" +
-                        "            </div>\n" +
-                        "        </div>\n" +
+                                 iparamsampleHtml +"\n"+
                         "        <div class=\"row cl\">\n" +
                         "            <label class=\"form-label col-xs-4 col-sm-3\">返回值类型：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
@@ -438,6 +509,40 @@
 
     });
 
+    //根据请求参数类型判断请求参数实例展示方式
+    function request1(){
+        var iparamtype = $("#iparamtype").val();
+        if(iparamtype == 2){
+            document.getElementById("request1").style.display = "none";
+            document.getElementById("paramInput1").style.display = "block";
+        }else{
+            document.getElementById("request1").style.display = "block";
+            document.getElementById("paramInput1").style.display = "none";
+        }
+
+    }
+    //请求参数实例动态增加输入框处理
+    function addInput(){
+        var rows=document.getElementById("paramTable").rows.length;
+        var row=rows+1;
+        var html="<tr id='tr"+row+"'>\n" +
+            "                        <td style='width: 30%'><input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"key\" id=\"key"+row+"\" name=\"key"+row+"\"></td>\n" +
+            "                        <td style='width: 55%;'>\n" +
+            "                            <input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"value\" id=\"value"+row+"\" name=\"value"+row+"\">\n" +
+            "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a><a href='javascript:;' onclick='clearInput("+row+")'><i class=\"Hui-iconfont\">&#xe6a1;</i></a>\n" +
+            "                        </td>\n" +
+            "                    </tr>";
+
+        $("#paramTable").append(html);
+
+    }
+
+    //动态减少输入框处理
+    function clearInput(row){
+        document.getElementById("tr"+row).remove();
+
+    }
+
     //作废
     function cancel_ti(obj,id){
         layer.confirm('作废接口将会连带删除此接口关联的用例,并且一键导入时,也不会重新导入此接口,确认作废?', {
@@ -463,7 +568,33 @@
         var iheadersample = $("#iheadersample").val();
         var icontenttype = $("#icontenttype").val();
         var iparamtype = $("#iparamtype").val();
-        var iparamsample = $("#iparamsample").val();
+        var iparamsample;
+        if(iparamtype == 2){
+
+            var table=document.getElementById("paramTable");
+            var rows=table.rows;
+            var json;
+
+            json = "{";
+            for(i=0;i<rows.length;i++){
+                var rowList=rows[i].getElementsByTagName("input");
+                if(rowList[0].value.length>0 || rowList[1].value.length>0){
+                    var key=rowList[0].value;
+                    var value=rowList[1].value;
+                    json+='\"'+key+'\"'+':\"'+value+'\",';
+                }
+
+            }
+            if(json.length>1){
+                json = json.substring(0, json.length-1);
+            }
+
+            json+="}";
+            iparamsample=json;
+
+        }else{
+            iparamsample = $("#iparamsample").val();
+        }
         var iresponsetype = $("#iresponsetype").val();
         var idev = $("#idev").val();
 

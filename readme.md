@@ -16,7 +16,7 @@
     1.jdk1.8或以上  
     2.安装idea,必要的设置(设置encoding=utf8,安装lombok插件)  
     3.安装git,推荐新版本  
-      克隆项目到本地:git clone https://github.com/hryOrgan/hryAuto.git  
+      克隆项目到本地:git clone https://xxx 
     4.安装maven(非必需,idea自带maven插件)  
     5.idea打开本地项目,将hryrun和hryweb设置为module,按maven包导入,hryweb项目需要在Facets标记Spring和Web属性  
     6.maven依赖下载,可配置aliyun镜像  

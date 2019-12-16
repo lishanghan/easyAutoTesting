@@ -86,10 +86,14 @@
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">请求参数：</label>
-            <div class="formControls col-xs-8 col-sm-9">
+            <div id="request1" class="formControls col-xs-8 col-sm-9">
                 <textarea id="requestParam" name="requestParam" cols="" rows="" class="textarea valid"
                           placeholder="请输入请求参数..."></textarea>
                 <!--<pre id="requestParam"></pre>-->
+            </div>
+            <div id="paramInput1" class="formControls col-xs-8 col-sm-9" hidden>
+                <table id="paramTable" style="width: 86%;">
+                </table>
             </div>
         </div>
         <div class="row cl">
@@ -238,7 +242,29 @@
                         requestparam = tcase.requestparam;
                     }
                     var iparamtype = ti.iparamtype;
-                    if (requestparam != null && requestparam.length > 0 && iparamtype == 1) {
+                    if(iparamtype == 1){
+                        document.getElementById("request1").style.display = "block";
+                        document.getElementById("paramInput1").style.display = "none";
+                        $("#paramTable").find("tr").remove();
+
+                        if (requestparam != null && requestparam.length > 0) {
+
+                            try {
+                                var requestJson = JSON.stringify(JSON.parse(requestparam), null, 2);
+                                $("#requestParam").val(requestJson);
+                            } catch (e) {
+                                $("#requestParam").val(requestparam);
+                            }
+                        }else{
+                            $("#requestParam").val(requestparam);
+                        }
+
+                    } else if(iparamtype == 2) {//请求参数类型为map处理逻辑
+
+                        changeByParamType(requestparam);
+                    }
+
+                   /* if (requestparam != null && requestparam.length > 0 && iparamtype == 1) {
                         try {
                             var requestparamJson = JSON.stringify(JSON.parse(requestparam), null, 2);
                             $("#requestParam").val(requestparamJson);
@@ -247,7 +273,7 @@
                         }
                     } else {
                         $("#requestParam").val(requestparam);
-                    }
+                    }*/
                     //断言类型
                     var assertTypeHtml = "";
                     for (var k = 0; k < assertTypeList.length; k++) {
@@ -281,8 +307,10 @@
 
                     //用例设计人
                     $("#author").val(tcase.author);
-                    var submit = "<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTcase(" + cId + ")\"><i class=\"icon-ok\"></i> 提交</button>" +
-                        "<button type=\"button\" style='margin-left:5px;' class=\"btn btn-success radius\" id=\"admin-role-run\" name=\"admin-role-run\" onclick=\"runTcase()\"><i class=\"icon-ok\"></i> 测试</button>" +
+                    //提交按钮处理
+
+                    var submit = "<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTcase(" + cId + ","+iparamtype+")\"><i class=\"icon-ok\"></i> 提交</button>" +
+                        "<button type=\"button\" style='margin-left:5px;' class=\"btn btn-success radius\" id=\"admin-role-run\" name=\"admin-role-run\" onclick=\"runTcase("+iparamtype+")\"><i class=\"icon-ok\"></i> 测试</button>" +
                         "<button type=\"button\" style='margin-left:5px;' class=\"btn btn-success radius\" id=\"admin-role-close\" name=\"admin-role-close\" onclick=\"layer_close()\"><i class=\"icon-ok\"></i>关闭</button>";
                     $("#submit").append(submit);
 
@@ -310,6 +338,71 @@
 
     });
 
+    //请求参数实例动态增加输入框处理
+    function addInput(){
+        var rows=document.getElementById("paramTable").rows.length;
+        var row=rows+1;
+        var html="<tr id='tr"+row+"'>\n" +
+            "                        <td style='width: 30%'><input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"key\" id=\"key"+row+"\" name=\"key"+row+"\"></td>\n" +
+            "                        <td style='width: 55%;'>\n" +
+            "                            <input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"value\" id=\"value"+row+"\" name=\"value"+row+"\">\n" +
+            "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a><a href='javascript:;' onclick='clearInput("+row+")'><i class=\"Hui-iconfont\">&#xe6a1;</i></a>\n" +
+            "                        </td>\n" +
+            "                    </tr>";
+
+        $("#paramTable").append(html);
+
+    }
+
+    //动态减少输入框处理
+    function clearInput(row){
+        document.getElementById("tr"+row).remove();
+
+    }
+
+    //根据请求参数类型不同更改请求参数展示方式
+    function changeByParamType(iparamsample){
+        document.getElementById("request1").style.display = "none";
+        document.getElementById("paramInput1").style.display = "block";
+        var inputHtml="";
+        if(iparamsample == '{}'){
+            inputHtml = "<tr id='tr1'>\n" +
+                "                        <td style='width: 30%'><input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"key\" id=\"key1\" name=\"key1\"></td>\n" +
+                "                        <td style='width: 55%;'>\n" +
+                "                            <input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"value\" id=\"value1\" name=\"value1\">\n" +
+                "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a>\n" +
+                "                        </td>\n" +
+                "                    </tr>";
+            $("#paramTable").append(inputHtml);
+
+        }else{
+            var iparamDemo=JSON.parse(iparamsample);
+            var num=0;
+            for(var key in iparamDemo) {
+                num++;
+                if (num == 1) {
+                    inputHtml += "<tr id='tr" + num + "'>\n" +
+                        "                        <td style='width: 30%'><input type=\"text\" class=\"input-text\" value=\"" + key + "\" placeholder=\"key\" id=\"key" + num + "\" name=\"key" + num + "\"></td>\n" +
+                        "                        <td style='width: 55%;'>\n" +
+                        "                            <input type=\"text\" class=\"input-text\" value=\"" + iparamDemo[key] + "\" placeholder=\"value\" id=\"value" + num + "\" name=\"value" + num + "\">\n" +
+                        "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a><a href='javascript:;' onclick='clearInput(" + num + ")'></a>\n" +
+                        "                        </td>\n" +
+                        "                    </tr>";
+                } else {
+                    inputHtml += "<tr id='tr" + num + "'>\n" +
+                        "                        <td style='width: 30%'><input type=\"text\" class=\"input-text\" value=\"" + key + "\" placeholder=\"key\" id=\"key" + num + "\" name=\"key" + num + "\"></td>\n" +
+                        "                        <td style='width: 55%;'>\n" +
+                        "                            <input type=\"text\" class=\"input-text\" value=\"" + iparamDemo[key] + "\" placeholder=\"value\" id=\"value" + num + "\" name=\"value" + num + "\">\n" +
+                        "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a><a href='javascript:;' onclick='clearInput(" + num + ")'><i class=\"Hui-iconfont\">&#xe6a1;</i></a>\n" +
+                        "                        </td>\n" +
+                        "                    </tr>";
+                }
+            }
+            $("#paramTable").append(inputHtml);
+        }
+
+    }
+
     //断言类型改变处理
     function assertTypeChage() {
         var assertType = $("#assertType").val();
@@ -330,13 +423,40 @@
     }
 
     //编辑用例
-    function editTcase(id) {
+    function editTcase(id,paramType) {
         var caseName = $("#caseName").val();
         var remark = $("#remark").val();
         var env = $("#env").val();
         var service = $("#service").val();
         var requestHeader = $("#headerText").val();
-        var requestParam = $("#requestParam").val();
+        var requestParam;
+        if(paramType == 2){
+
+            var table=document.getElementById("paramTable");
+            var rows=table.rows;
+            var json;
+
+            json = "{";
+            for(i=0;i<rows.length;i++){
+                var rowList=rows[i].getElementsByTagName("input");
+                if(rowList[0].value.length>0 || rowList[1].value.length>0){
+                    var key=rowList[0].value;
+                    var value=rowList[1].value;
+                    json+='\"'+key+'\"'+':\"'+value+'\",';
+                }
+
+            }
+            if(json.length>1){
+                json = json.substring(0, json.length-1);
+            }
+
+            json+="}";
+            requestParam=json;
+
+        }else{
+            requestParam = $("#requestParam").val();
+        }
+
         var assertType = $("#assertType").val();
         var expected = $("#expected").val();
         var cafter = $("#cafter").val();
@@ -408,13 +528,40 @@
     }
 
     //运行用例
-    function runTcase() {
+    function runTcase(paramType) {
         var caseName = $("#caseName").val();
         var remark = $("#remark").val();
         var env = $("#env").val();
         var service = $("#service").val();
         var requestHeader = $("#headerText").val();
-        var requestParam = $("#requestParam").val();
+        var requestParam;
+        if(paramType == 2){
+
+            var table=document.getElementById("paramTable");
+            var rows=table.rows;
+            var json;
+
+            json = "{";
+            for(i=0;i<rows.length;i++){
+                var rowList=rows[i].getElementsByTagName("input");
+                if(rowList[0].value.length>0 || rowList[1].value.length>0){
+                    var key=rowList[0].value;
+                    var value=rowList[1].value;
+                    json+='\"'+key+'\"'+':\"'+value+'\",';
+                }
+
+            }
+            if(json.length>1){
+                json = json.substring(0, json.length-1);
+            }
+
+            json+="}";
+            requestParam=json;
+
+        }else{
+            requestParam = $("#requestParam").val();
+        }
+
         var assertType = $("#assertType").val();
         var expected = $("#expected").val();
         var cafter = $("#cafter").val();

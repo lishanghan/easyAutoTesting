@@ -97,12 +97,27 @@
                 <textarea id="headerText" name="headerText" cols="" rows="" class="textarea valid"
                           placeholder="" style="width:80%;"></textarea>
             </div>
+            <div id="paramInput2" class="formControls col-xs-8 col-sm-9" hidden>
+                <table id="paramTable1" style="width: 86%;">
+                    <tr>
+                        <td style="width: 30%;"><input type="text" class="input-text" value="" placeholder="key" id="key1" name="key1"></td>
+                        <td style="width: 55%;">
+                            <input type="text" class="input-text" value="" placeholder="value" id="value1" name="value1">
+                            <a href="javascript:;" onclick="addInput()"><i class="Hui-iconfont">&#xe600;</i></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3" style="width:20%;">请求参数：</label>
-            <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
+            <div id="request1" class="formControls col-xs-8 col-sm-9" style="width:80%;">
                 <textarea id="requestParam" name="requestParam" cols="" rows="" class="textarea valid"
                           placeholder="请输入请求参数..." style="width:80%;"></textarea>
+            </div>
+            <div id="paramInput1" class="formControls col-xs-8 col-sm-9" hidden>
+                <table id="paramTable" style="width: 86%;">
+                </table>
             </div>
         </div>
         <div class="row cl">
@@ -330,6 +345,12 @@
         //设置请求参数
         var iparamsample = selectedTi.iparamsample;
         var iparamtype = selectedTi.iparamtype;
+        var sub = document.getElementById("admin-role-save");
+        sub.removeAttribute("onclick");
+        sub.setAttribute("onclick","addTcase("+iparamtype+")");
+        var test = document.getElementById("test");
+        test.removeAttribute("onclick");
+        test.setAttribute("onclick","runTcase("+iparamtype+")");
         setRequestParameter();
         if (copyFlag) {//复制
             if (iparamtype == 1) {//接口参数类型为JSON,格式化后填充
@@ -347,9 +368,37 @@
             } catch (e) {
                 $("#requestParam").val(iparamsample);
             }
-        } else if (iparamsample != null) {//不是复制 ,请求参数类型不为json
+        }/*else if(iparamtype == 3){//请求参数类型为text，请求参数更改为key-value输入框
+            document.getElementById("request1").style.display = "none";
+            document.getElementById("paramInput1").style.display = "block";
+            var iparamDemo=JSON.parse(iparamsample);
+            var num=0;
+            var inputHtml="";
+            for(var key in iparamDemo) {
+                num++;
+                if (num == 1) {
+                    inputHtml += "<tr id='tr" + num + "'>\n" +
+                        "                        <td style='width: 30%'><input type=\"text\" class=\"input-text\" value=\"" + key + "\" placeholder=\"key\" id=\"key" + num + "\" name=\"key" + num + "\"></td>\n" +
+                        "                        <td style='width: 55%;'>\n" +
+                        "                            <input type=\"text\" class=\"input-text\" value=\"" + iparamDemo[key] + "\" placeholder=\"value\" id=\"value" + num + "\" name=\"value" + num + "\">\n" +
+                        "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a><a href='javascript:;' onclick='clearInput(" + num + ")'></a>\n" +
+                        "                        </td>\n" +
+                        "                    </tr>";
+                } else {
+                    inputHtml += "<tr id='tr" + num + "'>\n" +
+                        "                        <td style='width: 30%'><input type=\"text\" class=\"input-text\" value=\"" + key + "\" placeholder=\"key\" id=\"key" + num + "\" name=\"key" + num + "\"></td>\n" +
+                        "                        <td style='width: 55%;'>\n" +
+                        "                            <input type=\"text\" class=\"input-text\" value=\"" + iparamDemo[key] + "\" placeholder=\"value\" id=\"value" + num + "\" name=\"value" + num + "\">\n" +
+                        "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a><a href='javascript:;' onclick='clearInput(" + num + ")'><i class=\"Hui-iconfont\">&#xe6a1;</i></a>\n" +
+                        "                        </td>\n" +
+                        "                    </tr>";
+                }
+            }
+            $("#paramTable").append(inputHtml);
+
+        }*/ /*else if (iparamsample != null) {//不是复制 ,请求参数类型不为json
             $("#requestParam").val(iparamsample)
-        }
+        }*/
 
         //设置断言类型
         var assertTypeHtml = "";
@@ -391,11 +440,40 @@
         return null;
     }
 
+    //请求参数实例动态增加输入框处理
+    function addInput(){
+        var rows=document.getElementById("paramTable").rows.length;
+        var row=rows+1;
+        var html="<tr id='tr"+row+"'>\n" +
+            "                        <td style='width: 30%'><input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"key\" id=\"key"+row+"\" name=\"key"+row+"\"></td>\n" +
+            "                        <td style='width: 55%;'>\n" +
+            "                            <input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"value\" id=\"value"+row+"\" name=\"value"+row+"\">\n" +
+            "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a><a href='javascript:;' onclick='clearInput("+row+")'><i class=\"Hui-iconfont\">&#xe6a1;</i></a>\n" +
+            "                        </td>\n" +
+            "                    </tr>";
+
+        $("#paramTable").append(html);
+
+    }
+
+    //动态减少输入框处理
+    function clearInput(row){
+        document.getElementById("tr"+row).remove();
+
+    }
+
     //接口改变处理
     function tiChange(cName, prevalue) {
         var tId = $("#ti").val();
         var t = getTiById(tId);
         var remark = t.remark;
+        var paramType = t.iparamtype;
+        var sub = document.getElementById("admin-role-save");
+        sub.removeAttribute("onclick");
+        sub.setAttribute("onclick","addTcase("+paramType+")");
+        var test = document.getElementById("test");
+        test.removeAttribute("onclick");
+        test.setAttribute("onclick","runTcase("+paramType+")");
 
         if ($.trim(cName) == $.trim(prevalue) || $.trim(cName) == "") {//如果prevalue==cName,证明用户并没有编辑caseName,此时接口变更时,将会填充新的值
             $("#caseName").val(remark);
@@ -423,21 +501,76 @@
         }
 
         var iparamsample = t.iparamsample;
-        //var iparamtype = getTitype(tId);
         var iparamtype = t.iparamtype;
 
-        if (iparamsample != null && iparamsample.length > 0 && iparamtype == 1) {
-            try {
-                var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
-                $("#requestParam").val(requestJson);
-            } catch (e) {
+        if(iparamtype == 1){
+            document.getElementById("request1").style.display = "block";
+            document.getElementById("paramInput1").style.display = "none";
+            $("#paramTable").find("tr").remove();
+
+            if (iparamsample != null && iparamsample.length > 0) {
+
+                try {
+                    var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
+                    $("#requestParam").val(requestJson);
+                } catch (e) {
+                    $("#requestParam").val(iparamsample);
+                }
+            }else{
                 $("#requestParam").val(iparamsample);
             }
-        } else {
-            $("#requestParam").val("");
+
+        } else if(iparamtype == 2) {//请求参数类型为map处理逻辑
+
+            changeByParamType(iparamsample);
+
+            //$("#requestParam").val("");
         }
         //$("#requestParam").empty();
 
+
+    }
+
+    //根据请求参数类型不同更改请求参数展示方式
+    function changeByParamType(iparamsample){
+        document.getElementById("request1").style.display = "none";
+        document.getElementById("paramInput1").style.display = "block";
+        var inputHtml="";
+        if(iparamsample == '{}'){
+            inputHtml = "<tr id='tr1'>\n" +
+                "                        <td style='width: 30%'><input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"key\" id=\"key1\" name=\"key1\"></td>\n" +
+                "                        <td style='width: 55%;'>\n" +
+                "                            <input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"value\" id=\"value1\" name=\"value1\">\n" +
+                "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a>\n" +
+                "                        </td>\n" +
+                "                    </tr>";
+            $("#paramTable").append(inputHtml);
+
+        }else{
+            var iparamDemo=JSON.parse(iparamsample);
+            var num=0;
+            for(var key in iparamDemo) {
+                num++;
+                if (num == 1) {
+                    inputHtml += "<tr id='tr" + num + "'>\n" +
+                        "                        <td style='width: 30%'><input type=\"text\" class=\"input-text\" value=\"" + key + "\" placeholder=\"key\" id=\"key" + num + "\" name=\"key" + num + "\"></td>\n" +
+                        "                        <td style='width: 55%;'>\n" +
+                        "                            <input type=\"text\" class=\"input-text\" value=\"" + iparamDemo[key] + "\" placeholder=\"value\" id=\"value" + num + "\" name=\"value" + num + "\">\n" +
+                        "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a><a href='javascript:;' onclick='clearInput(" + num + ")'></a>\n" +
+                        "                        </td>\n" +
+                        "                    </tr>";
+                } else {
+                    inputHtml += "<tr id='tr" + num + "'>\n" +
+                        "                        <td style='width: 30%'><input type=\"text\" class=\"input-text\" value=\"" + key + "\" placeholder=\"key\" id=\"key" + num + "\" name=\"key" + num + "\"></td>\n" +
+                        "                        <td style='width: 55%;'>\n" +
+                        "                            <input type=\"text\" class=\"input-text\" value=\"" + iparamDemo[key] + "\" placeholder=\"value\" id=\"value" + num + "\" name=\"value" + num + "\">\n" +
+                        "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a><a href='javascript:;' onclick='clearInput(" + num + ")'><i class=\"Hui-iconfont\">&#xe6a1;</i></a>\n" +
+                        "                        </td>\n" +
+                        "                    </tr>";
+                }
+            }
+            $("#paramTable").append(inputHtml);
+        }
 
     }
 
@@ -514,20 +647,47 @@
     }
 
     //添加用例
-    function addTcase() {
+    function addTcase(paramType) {
         var caseName = $("#caseName").val();
         var remark = $("#remark").val();
         var env = $("#env").val();
         var service = $("#service").val();
         var ti = $("#ti").val();
         var requestHeader = $("#headerText").val();
-        var requestParam = $("#requestParam").val();
+
+        var requestParam;
+        if(paramType == 2){
+
+            var table=document.getElementById("paramTable");
+            var rows=table.rows;
+            var json;
+
+            json = "{";
+            for(i=0;i<rows.length;i++){
+                var rowList=rows[i].getElementsByTagName("input");
+                if(rowList[0].value.length>0 || rowList[1].value.length>0){
+                    var key=rowList[0].value;
+                    var value=rowList[1].value;
+                    json+='\"'+key+'\"'+':\"'+value+'\",';
+                }
+
+            }
+            if(json.length>1){
+                json = json.substring(0, json.length-1);
+            }
+
+            json+="}";
+            requestParam=json;
+
+        }else{
+            requestParam = $("#requestParam").val();
+        }
+
         var assertType = $("#assertType").val();
         var expected = $("#expected").val();
         var cafter = $("#cafter").val();
         var author = $("#author").val();
         var testclass = $("#testclass").val();
-
 
         if (caseName == null || caseName == "") {
             layer.alert("用例名称不能为空！");
@@ -599,14 +759,41 @@
     }
 
     //运行用例
-    function runTcase() {
+    function runTcase(paramType) {
         var caseName = $("#caseName").val();
         var remark = $("#remark").val();
         var env = $("#env").val();
         var service = $("#service").val();
         var ti = $("#ti").val();
         var requestHeader = $("#headerText").val();
-        var requestParam = $("#requestParam").val();
+        var requestParam;
+        if(paramType == 2){
+
+            var table=document.getElementById("paramTable");
+            var rows=table.rows;
+            var json;
+
+            json = "{";
+            for(i=0;i<rows.length;i++){
+                var rowList=rows[i].getElementsByTagName("input");
+                if(rowList[0].value.length>0 || rowList[1].value.length>0){
+                    var key=rowList[0].value;
+                    var value=rowList[1].value;
+                    json+='\"'+key+'\"'+':\"'+value+'\",';
+                }
+
+            }
+            if(json.length>1){
+                json = json.substring(0, json.length-1);
+            }
+
+            json+="}";
+            requestParam=json;
+
+        }else{
+            requestParam = $("#requestParam").val();
+        }
+
         var assertType = $("#assertType").val();
         var expected = $("#expected").val();
         var cafter = $("#cafter").val();
