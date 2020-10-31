@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * @Description:
- * @Author: luqiwei
+ * @Author: lishanghan
  * @Date: 2018/5/12 15:11
  */
 @Slf4j
@@ -46,9 +46,9 @@ public class UserController {
     @PostMapping("/insertOne")
     public Result insertOne(@Validated User user) {
         //用户名校验,只支持邮箱
-        if (!user.getIdentity().matches(RegexEnum.EMAIL_REGEX.getRegex())) {
+        /*if (!user.getIdentity().matches(RegexEnum.EMAIL_REGEX.getRegex())) {
             throw new HryException(StatusCodeEnum.REGEX_ERROR_EMAIL, "用户名必须是邮箱");
-        }
+        }*/
         //密码校验,密码只能是数字,字母,英文符号,不包括空格
         if (!user.getPassword().matches(RegexEnum.PWD_REGEX.getRegex())) {
             throw new HryException(StatusCodeEnum.REGEX_ERROR_PWD);
@@ -154,9 +154,9 @@ public class UserController {
         HttpSession session;
         User user = null;
         if (!StringUtils.isAnyBlank(identity, password)) {
-            if (!identity.contains("@")) {
+            /*if (!identity.contains("@")) {
                 identity += "@legain.com";
-            }
+            }*/
             user = userService.findUser(identity, password);
         }
         if (user == null) {

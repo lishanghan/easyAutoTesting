@@ -60,6 +60,31 @@ public class ReplaceUtil {
         }
     }
 
+    // 期望结果处理
+    public static <T extends Base> String replaceExpect(String expect,String dbinfo, T entity){
+        if (StringUtils.isNotBlank(expect)){
+
+            Reporter.log("用例设计期望结果："+expect.replaceAll("<", "＜").replaceAll(">", "＞"));
+            expect = expect.replaceAll("\\n", " ");//所有的换行替换成空格
+
+            while (isNeedReplace(expect)) {
+                expect = replaceAll(expect, dbinfo, entity, null, null);
+            }
+            Reporter.log("用例实际期望结果："+expect);
+            return expect;
+
+
+        } else {
+            Reporter.log("用例设计期望结果:null");
+            log.info("用例设计期望结果:null");
+            return expect;
+        }
+
+
+
+
+    }
+
     public static <T extends Base> void replaceAfter(String base, String responseBody, String dbinfo, T entity) {
 
         if (StringUtils.isBlank(base)) {

@@ -159,7 +159,7 @@
                 </ul>
             </dd>
         </dl>
-        <dl id="menu-workInfo" hidden>
+        <dl id="menu-workInfo">
             <dt><i class="Hui-iconfont">&#xe623;</i> 工作管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
@@ -285,9 +285,11 @@
         var realName = $.cookie('realnameCookie');
         var groupId = $.cookie('groupidCookie');
         $("#userName").append(realName);
-        if (groupId != 11) {
+        if(loginName != "lishanghan"){
+            $("#menu-user").hide();
             $("#menu-workInfo").hide();
         }
+
         if (groupId != 1) {
             $("#menu-comments").hide();
             $("#menu-member").hide();

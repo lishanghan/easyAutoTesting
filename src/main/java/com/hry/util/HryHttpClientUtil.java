@@ -15,31 +15,48 @@ import com.hry.exception.HryException;
 import com.hry.po.HryTest;
 import com.hry.testng.base.Base;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.cookie.SetCookie;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.testng.Reporter;
+
+import javax.net.ssl.SSLContext;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -250,6 +267,7 @@ public class HryHttpClientUtil {
         String param = ReplaceUtil.replaceBefore(test.getTcase().getRequestparam(), test.getTservicedetail().getDbinfo(), entity);
         log.info("---1.前置处理-结束");
         log.info("---2.发送请求-开始");
+
         //如果是虚拟接口,则只进行前置处理,不会发送http请求和后置处理
         if (virtualInterfaceFlag) {
             Reporter.log("实际请求参数:" + param);
@@ -286,6 +304,18 @@ public class HryHttpClientUtil {
             String soapAction = test.getTi().getSoapAction();
             String xml = param;
             responseBody = soapXmlSend(url,xml,soapAction);
+
+            //针对htts+post 加特殊验签定制发送请求方法
+        }else if(contentType.equals("application/x-www-form-urlencoded")){
+
+            log.info("进来了！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！");
+            String url = HttpTypeEnum.getValue(test.getTservice().getHttptype()) + "://" + test.getTservicedetail().getHostinfo() + test.getTi().getIuri();
+            Map<String,String > map = JSON.parseObject(param, Feature.OrderedField).toJavaObject(Map.class);
+            String timestamp = String.valueOf(LocalDateTime.now().toEpochSecond(ZoneOffset.of("+8")));
+            map.put("timestamp", timestamp);
+            responseBody = send(url,map);
+
+
 
         }
 
@@ -458,7 +488,147 @@ public class HryHttpClientUtil {
     }
 
 
+    /**
+     * https+携带签名参数 模拟请求
+     *
+     * @param url       资源地址
+     * @param map   参数列表
+     * @return
+     * @throws NoSuchAlgorithmException
+     * @throws KeyManagementException
+     * @throws IOException
+     * @throws ClientProtocolException
+     */
+    public static String send(String url, Map<String,String> map){
+        String body = "";
+        //采用绕过验证的方式处理https请求
+        SSLContext sslcontext = null;
+        try {
+            sslcontext = SSLUtil.createIgnoreVerifySSL();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        }
 
+        // 设置协议http和https对应的处理socket链接工厂的对象
+        Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
+                .register("http", PlainConnectionSocketFactory.INSTANCE)
+                .register("https", new SSLConnectionSocketFactory(sslcontext))
+                .build();
+        PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
+        HttpClients.custom().setConnectionManager(connManager);
+
+        //创建自定义的httpclient对象
+        CloseableHttpClient client = HttpClients.custom().setConnectionManager(connManager).build();
+
+        //创建post方式请求对象
+        HttpPost httpPost = new HttpPost(url);
+        //针对3011接口处理accesskey
+        //String appsecret = "2fc09d6804b2edbf6344d248eac2fab1";
+        String accesskey = map.get("accesskey");
+        map.remove("accesskey");
+
+
+        List<Map.Entry<String, String>> infoIds = new ArrayList<>(map.entrySet());
+        // 对所有传入参数按照字段名的 ASCII 码从小到大排序（字典序）
+        Collections.sort(infoIds, (o1, o2) -> (o1.getKey()).toString().compareTo(o2.getKey()));
+
+        // 构造签名键值对的格式
+        StringBuilder sb = new StringBuilder();
+        //判断accesskey 是否为空，不同处理方式
+        if(accesskey == "" || accesskey == null){//accesskey 为空拼接方式
+
+            sb.append(map.get("appsecret"));
+            infoIds.forEach(item -> {
+                sb.append(item.getValue());
+            });
+
+            sb.append(map.get("appsecret"));
+
+        }else{//accesskey 不为空拼接方式
+
+            sb.append(map.get("appsecret"));
+            sb.append(accesskey);
+            infoIds.forEach(item -> {
+                sb.append(item.getValue());
+            });
+
+            sb.append(map.get("appsecret"));
+            sb.append(accesskey);
+        }
+
+        log.info("3011接口组装拼接后参数为："+sb);
+
+        //进行MD5加密
+        String sign = DigestUtils.md5Hex(sb.toString());
+
+        //装填参数
+        List<NameValuePair> nvps;
+        nvps = new ArrayList<NameValuePair>();
+        if(map!=null){
+
+            map.forEach((k, v) -> nvps.add(new BasicNameValuePair(k, v)));
+            nvps.add(new BasicNameValuePair("sign", sign));
+        }
+
+        //设置参数到请求对象中
+        try {
+            httpPost.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        log.info("请求地址："+url);
+        log.info("请求参数："+nvps.toString());
+
+        //设置header信息
+        //指定报文头【Content-type】、【User-Agent】
+        httpPost.setHeader("Content-type", "application/x-www-form-urlencoded");
+        httpPost.setHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+        long startTime = System.currentTimeMillis();
+        //执行请求操作，并拿到结果（同步阻塞）
+        CloseableHttpResponse response = null;
+        try {
+            response = client.execute(httpPost);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //获取结果实体
+        HttpEntity entity = response.getEntity();
+        long endTime = System.currentTimeMillis();
+
+        if (entity != null) {
+            //按指定编码转换结果实体为String类型
+            try {
+                body = EntityUtils.toString(entity, "UTF-8");
+                EntityUtils.consume(entity);
+                EntityUtils.consume(entity);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        //打印日志
+        log.info("实际请求参数:" + nvps.toString());
+
+        Reporter.log("实际请求参数:" + nvps.toString());
+        log.info("请求Url:" + url);
+        Reporter.log("请求Url:" + url);
+        log.info("请求方式:" + httpPost.getMethod());
+        Reporter.log("请求方式:" + httpPost.getMethod());
+        log.info("请求耗时(s):" + (endTime - startTime) / 1000d);
+        Reporter.log("请求耗时(s):" + (endTime - startTime) / 1000d);
+        log.info("响应实体:" + body);
+
+        //释放链接
+        try {
+            response.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return body;
+    }
 
 
 

@@ -15,16 +15,28 @@ public class API_3011DefaultTest extends Base{
         super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
     }
 
-    @Test(testName = "/user/getSubList", dataProvider = "provider", description = "获取游戏小号列表")
-    public void user_getSubList(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
     @Test(testName = "/user/login", dataProvider = "provider", description = "登录接口")
     public void user_login(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
+        supperAssert(actual, test,this);
+    }
+
+    @Test(testName = "/user/getSubList", dataProvider = "provider", description = "获取游戏小号列表")
+    public void user_getSubList(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test,this);
+    }
+
+    @Test(testName = "/test", dataProvider = "provider", description = "测试不用理会")
+    public void test(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test,this);
+    }
+
+    @Test(testName = "/user/register", dataProvider = "provider", description = "注册接口")
+    public void user_register(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test, this);
     }
 
 }

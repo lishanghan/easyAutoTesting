@@ -987,6 +987,8 @@ function getReplaceEnumList() {
     return replaceEnumList;
 }
 
+
+
 /**
  * 设置requestParam的<触发事件
  * */
@@ -1009,9 +1011,16 @@ function setRequestParameter() {
         limit: 200
     }
     $inputor = $('#requestParam').atwho(at_config);
+    //$inputor = $(":input").atwho(at_config);
+    $inputor = $("input[id*='value']").atwho(at_config);
+    $inputor = $('#expected').atwho(at_config);
     $inputor = $('#cafter').atwho(at_config);
     $inputor.focus().atwho('run');
+
 }
+
+
+
 
 /*关闭弹出框口*/
 function layer_close() {

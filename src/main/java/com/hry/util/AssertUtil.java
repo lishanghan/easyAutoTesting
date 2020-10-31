@@ -10,6 +10,7 @@ import com.hry.po.HryTest;
 import com.hry.po.Tcase;
 import com.hry.po.Ti;
 import com.hry.service.TiService;
+import com.hry.testng.base.Base;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.Reporter;
@@ -150,7 +151,9 @@ public class AssertUtil {
         supperAssert(tcase.getAsserttype(), tcase.getExpected(), actual, ti.getIresponsetype());
     }
 
-    public static void supperAssert(String actual, HryTest test) {
+    public static<T extends Base> void supperAssert(String actual, HryTest test, T entity) {
+        //替换期望结果参数化
+        String expect = ReplaceUtil.replaceExpect(test.getTcase().getExpected(),test.getTservicedetail().getDbinfo(), entity);
         log.info("---4.断言-开始");
         ZdyProperty bean = SpringContextHolder.getBean(ZdyProperty.class);
         if (bean.getDebug()) {
@@ -161,7 +164,10 @@ public class AssertUtil {
             Reporter.log("虚拟接口直接断言通过!");
             return;
         }
-        supperAssert(test.getTcase().getAsserttype(), test.getTcase().getExpected(), actual, test.getTi().getIresponsetype());
+
+
+        //supperAssert(test.getTcase().getAsserttype(), test.getTcase().getExpected(), actual, test.getTi().getIresponsetype());
+        supperAssert(test.getTcase().getAsserttype(), expect, actual, test.getTi().getIresponsetype());
         log.info("---4.断言-结束");
         log.info("+++++++++++++++++++++++++++++++++++++");
     }

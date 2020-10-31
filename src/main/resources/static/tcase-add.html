@@ -100,9 +100,9 @@
             <div id="paramInput2" class="formControls col-xs-8 col-sm-9" hidden>
                 <table id="paramTable1" style="width: 86%;">
                     <tr>
-                        <td style="width: 30%;"><input type="text" class="input-text" value="" placeholder="key" id="key1" name="key1"></td>
+                        <td style="width: 30%;"><input type="text" class="input-text" value="" placeholder="headKey" id="headKey1" name="headDey1"></td>
                         <td style="width: 55%;">
-                            <input type="text" class="input-text" value="" placeholder="value" id="value1" name="value1">
+                            <input type="text" class="input-text" value="" placeholder="headValue" id="headValue1" name="headValue1">
                             <a href="javascript:;" onclick="addInput()"><i class="Hui-iconfont">&#xe600;</i></a>
                         </td>
                     </tr>
@@ -188,11 +188,14 @@
 <script type="text/javascript">
     //loading
     var layerIndex;
-    $(function () {
+    /*$(function () {
         $.ajaxSetup({
             layerIndex: -1,
             beforeSend: function () { //插件加载前
                 layerIndex = layer.load(1, {shade: [1.01, '#fff']});
+            },
+            success:function(){
+                layer.close(loading);
             },
             error: function () { //报错时执行
                 layer.alert('显示异常，请刷新后重试', {
@@ -202,7 +205,7 @@
                 });
             }
         });
-    });
+    });*/
 
     function getCasename() {
         return $("#caseName").val();
@@ -351,54 +354,36 @@
         var test = document.getElementById("test");
         test.removeAttribute("onclick");
         test.setAttribute("onclick","runTcase("+iparamtype+")");
-        setRequestParameter();
+        //调用requestParam的<触发事件
+        //setRequestParameter();
         if (copyFlag) {//复制
             if (iparamtype == 1) {//接口参数类型为JSON,格式化后填充
                 try {
                     $("#requestParam").val(JSON.stringify(JSON.parse(copyTcase.requestparam), null, 2));
+
                 } catch (e) {
                     $("#requestParam").val(copyTcase.requestparam);
                 }
             } else {//否则直接填充
                 $("#requestParam").val(copyTcase.requestparam);
             }
-        } else if (iparamtype == 1) {//不是复制 ,请求参数类型为json
-            try {
-                $("#requestParam").val(JSON.stringify(JSON.parse(iparamsample), null, 2));
-            } catch (e) {
-                $("#requestParam").val(iparamsample);
-            }
-        }/*else if(iparamtype == 3){//请求参数类型为text，请求参数更改为key-value输入框
-            document.getElementById("request1").style.display = "none";
-            document.getElementById("paramInput1").style.display = "block";
-            var iparamDemo=JSON.parse(iparamsample);
-            var num=0;
-            var inputHtml="";
-            for(var key in iparamDemo) {
-                num++;
-                if (num == 1) {
-                    inputHtml += "<tr id='tr" + num + "'>\n" +
-                        "                        <td style='width: 30%'><input type=\"text\" class=\"input-text\" value=\"" + key + "\" placeholder=\"key\" id=\"key" + num + "\" name=\"key" + num + "\"></td>\n" +
-                        "                        <td style='width: 55%;'>\n" +
-                        "                            <input type=\"text\" class=\"input-text\" value=\"" + iparamDemo[key] + "\" placeholder=\"value\" id=\"value" + num + "\" name=\"value" + num + "\">\n" +
-                        "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a><a href='javascript:;' onclick='clearInput(" + num + ")'></a>\n" +
-                        "                        </td>\n" +
-                        "                    </tr>";
-                } else {
-                    inputHtml += "<tr id='tr" + num + "'>\n" +
-                        "                        <td style='width: 30%'><input type=\"text\" class=\"input-text\" value=\"" + key + "\" placeholder=\"key\" id=\"key" + num + "\" name=\"key" + num + "\"></td>\n" +
-                        "                        <td style='width: 55%;'>\n" +
-                        "                            <input type=\"text\" class=\"input-text\" value=\"" + iparamDemo[key] + "\" placeholder=\"value\" id=\"value" + num + "\" name=\"value" + num + "\">\n" +
-                        "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a><a href='javascript:;' onclick='clearInput(" + num + ")'><i class=\"Hui-iconfont\">&#xe6a1;</i></a>\n" +
-                        "                        </td>\n" +
-                        "                    </tr>";
-                }
-            }
-            $("#paramTable").append(inputHtml);
+        } else{//不是复制
 
-        }*/ /*else if (iparamsample != null) {//不是复制 ,请求参数类型不为json
-            $("#requestParam").val(iparamsample)
-        }*/
+            if (iparamtype == 1 || iparamtype == 3) {//请求参数类型为json
+                try {
+                    $("#requestParam").val(JSON.stringify(JSON.parse(iparamsample), null, 2));
+
+                } catch (e) {
+                    $("#requestParam").val(iparamsample);
+                }
+            } else if(iparamtype == 2){//请求
+
+                changeByParamType(iparamsample);
+
+            }
+
+
+        }
 
         //设置断言类型
         var assertTypeHtml = "";
@@ -427,7 +412,8 @@
                 $("#cafter").val(copyTcase.cafter);
             }
         }
-
+        //调用requestParam的<触发事件
+       setRequestParameter();
         layer.close(layerIndex);
 
     })
@@ -442,19 +428,24 @@
 
     //请求参数实例动态增加输入框处理
     function addInput(){
+
         var rows=document.getElementById("paramTable").rows.length;
         var row=rows+1;
         var html="<tr id='tr"+row+"'>\n" +
             "                        <td style='width: 30%'><input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"key\" id=\"key"+row+"\" name=\"key"+row+"\"></td>\n" +
             "                        <td style='width: 55%;'>\n" +
-            "                            <input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"value\" id=\"value"+row+"\" name=\"value"+row+"\">\n" +
+            "                            <input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"value\" id=\"value"+row+"\" name=\"value"+row+" \" autocomplete = \"off\">\n" +
             "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a><a href='javascript:;' onclick='clearInput("+row+")'><i class=\"Hui-iconfont\">&#xe6a1;</i></a>\n" +
             "                        </td>\n" +
             "                    </tr>";
 
         $("#paramTable").append(html);
 
+        //调用requestParam的<触发事件
+        setRequestParameter();
+
     }
+
 
     //动态减少输入框处理
     function clearInput(row){
@@ -523,25 +514,25 @@
         } else if(iparamtype == 2) {//请求参数类型为map处理逻辑
 
             changeByParamType(iparamsample);
-
-            //$("#requestParam").val("");
         }
         //$("#requestParam").empty();
-
+        //调用requestParam的<触发事件
+        setRequestParameter();
 
     }
 
-    //根据请求参数类型不同更改请求参数展示方式
+    //请求参数类型为map(2)展示方式
     function changeByParamType(iparamsample){
         document.getElementById("request1").style.display = "none";
         document.getElementById("paramInput1").style.display = "block";
+        $("#paramTable").find("tr").remove();
         var inputHtml="";
         if(iparamsample == '{}'){
             inputHtml = "<tr id='tr1'>\n" +
                 "                        <td style='width: 30%'><input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"key\" id=\"key1\" name=\"key1\"></td>\n" +
                 "                        <td style='width: 55%;'>\n" +
-                "                            <input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"value\" id=\"value1\" name=\"value1\">\n" +
-                "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a>\n" +
+                "                            <input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"value\" id=\"value1\" name=\"value1\" autocomplete = \"off\">\n" +
+                "                            <a href=\"javascript:;\" onclick=\"0addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a>\n" +
                 "                        </td>\n" +
                 "                    </tr>";
             $("#paramTable").append(inputHtml);
@@ -555,7 +546,7 @@
                     inputHtml += "<tr id='tr" + num + "'>\n" +
                         "                        <td style='width: 30%'><input type=\"text\" class=\"input-text\" value=\"" + key + "\" placeholder=\"key\" id=\"key" + num + "\" name=\"key" + num + "\"></td>\n" +
                         "                        <td style='width: 55%;'>\n" +
-                        "                            <input type=\"text\" class=\"input-text\" value=\"" + iparamDemo[key] + "\" placeholder=\"value\" id=\"value" + num + "\" name=\"value" + num + "\">\n" +
+                        "                            <input type=\"text\" class=\"input-text\" value=\"" + iparamDemo[key] + "\" placeholder=\"value\" id=\"value" + num + "\" name=\"value" + num + "\" autocomplete = \"off\">\n" +
                         "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a><a href='javascript:;' onclick='clearInput(" + num + ")'></a>\n" +
                         "                        </td>\n" +
                         "                    </tr>";
@@ -563,7 +554,7 @@
                     inputHtml += "<tr id='tr" + num + "'>\n" +
                         "                        <td style='width: 30%'><input type=\"text\" class=\"input-text\" value=\"" + key + "\" placeholder=\"key\" id=\"key" + num + "\" name=\"key" + num + "\"></td>\n" +
                         "                        <td style='width: 55%;'>\n" +
-                        "                            <input type=\"text\" class=\"input-text\" value=\"" + iparamDemo[key] + "\" placeholder=\"value\" id=\"value" + num + "\" name=\"value" + num + "\">\n" +
+                        "                            <input type=\"text\" class=\"input-text\" value=\"" + iparamDemo[key] + "\" placeholder=\"value\" id=\"value" + num + "\" name=\"value" + num + "\" autocomplete = \"off\">\n" +
                         "                            <a href=\"javascript:;\" onclick=\"addInput()\"><i class=\"Hui-iconfont\">&#xe600;</i></a><a href='javascript:;' onclick='clearInput(" + num + ")'><i class=\"Hui-iconfont\">&#xe6a1;</i></a>\n" +
                         "                        </td>\n" +
                         "                    </tr>";
@@ -571,6 +562,8 @@
             }
             $("#paramTable").append(inputHtml);
         }
+        //调用requestParam的<触发事件
+        //setRequestParameter();
 
     }
 

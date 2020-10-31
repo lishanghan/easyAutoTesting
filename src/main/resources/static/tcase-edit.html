@@ -151,7 +151,7 @@
 <script type="text/javascript">
     var layerIndex;
     //loading
-    $(function () {
+    /*$(function () {
         $.ajaxSetup({
             layerIndex: -1,
             beforeSend: function () { //插件加载前
@@ -166,7 +166,7 @@
                 });
             }
         });
-    });
+    });*/
 
     var iId;
     var cId;
@@ -237,7 +237,8 @@
 
                     //请求参数
                     var requestparam = "";
-                    setRequestParameter();
+                    //调用requestParam的<触发事件
+                    //setRequestParameter();
                     if (tcase.requestparam != null) {
                         requestparam = tcase.requestparam;
                     }
@@ -332,9 +333,12 @@
                     });
                 }
 
-            }
-        });
 
+            }
+
+        });
+        //调用requestParam的<触发事件
+        setRequestParameter();
 
     });
 
@@ -351,6 +355,8 @@
             "                    </tr>";
 
         $("#paramTable").append(html);
+        //调用requestParam的<触发事件
+        setRequestParameter();
 
     }
 
@@ -400,6 +406,7 @@
             }
             $("#paramTable").append(inputHtml);
         }
+
 
     }
 
