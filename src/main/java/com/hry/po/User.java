@@ -18,6 +18,9 @@ public class User {
     @NotBlank(message = "真实姓名必须")
     private String realname;
 
+    @NotBlank(message = "用户邮箱")
+    private String email;
+
     private Integer status;
 
     private String remark;
@@ -60,6 +63,15 @@ public class User {
 
     public void setRealname(String realname) {
         this.realname = realname == null ? null : realname.trim();
+    }
+
+    public String getEmail(){
+        return email;
+    }
+
+    public void setEmail(String email){
+        this.email = email == null ? null : email.trim();
+
     }
 
     public Integer getStatus() {

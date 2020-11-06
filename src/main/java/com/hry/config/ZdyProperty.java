@@ -22,6 +22,7 @@ public class ZdyProperty {
     @Value("${zdy.resourcePathPattern}")
     private String resourcePathPattern;
 
+
     public Boolean getDebug() {
         return debug;
     }
@@ -53,4 +54,5 @@ public class ZdyProperty {
     public void setResourcePathPattern(String resourcePathPattern) {
         this.resourcePathPattern = resourcePathPattern;
     }
+
 }

@@ -12,8 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
-
 import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -216,4 +217,21 @@ public class HryUtil {
         return UUID.randomUUID().toString().replaceAll("-", "").substring(0,
                 subSize == null || subSize == 0 || Math.abs(subSize) > 32 ? 32 : Math.abs(subSize));
     }
+
+
+
+    //获取当前ip
+    public static String getLocalIP() {
+        String localIP = null;
+        try {
+            localIP = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+        return localIP;
+    }
+
+
+
 }

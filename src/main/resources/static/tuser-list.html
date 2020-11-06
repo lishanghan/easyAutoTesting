@@ -51,8 +51,9 @@
                 <th width="10%">用户组</th>
                 <th width="10%">登录名</th>
                 <th width="10%">姓名</th>
-                <th width="15%">备注</th>
-                <th width="15%">操作</th>
+                <th width="10%">邮箱</th>
+                <th width="10%">备注</th>
+                <th width="10%">操作</th>
             </tr>
             </thead>
             <tbody id="tuserList">
@@ -170,6 +171,7 @@
                             "<td>"+groupName+"</td>\n" +
                             "<td>"+row.identity+"</td>\n" +
                             "<td >"+row.realname+"</td>\n" +
+                            "<td >"+row.email+"</td>\n" +
                             "<td>"+remark+"</td>\n" +
                             "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tuser_edit('用户编辑','tuser-edit.html',"+row.id+",'800','500')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"tuser_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +

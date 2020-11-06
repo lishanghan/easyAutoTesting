@@ -8,6 +8,8 @@ import com.hry.po.Tcustomdetail;
 import com.hry.po.User;
 import com.hry.response.Result;
 import com.hry.service.TcustomService;
+import com.hry.util.DingUtil;
+import com.hry.util.HryUtil;
 import com.hry.util.ResultUtil;
 import com.hry.vo.CustomVO;
 import lombok.extern.slf4j.Slf4j;
@@ -157,7 +159,14 @@ public class TcustomController {
         if (customId == null || customId == 0) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "运行定制测试时,定制测试id必填!");
         }
-        return ResultUtil.success(tcustomService.run(customId, user, false));
+        String reportName = tcustomService.run(customId, user, false);
+
+        String reportURl = "http://" + HryUtil.getLocalIP() +":8885" + reportName;
+        log.info("定制测试报告地址为：" + reportURl);
+        DingUtil dingUtil = new DingUtil();
+        dingUtil.sendDingReprot(reportURl);
+
+        return ResultUtil.success(reportName);
     }
 
     public void verifyTcustomdetail(Tcustomdetail tcustomdetail) {

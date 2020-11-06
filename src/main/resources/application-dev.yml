@@ -3,6 +3,14 @@ zdy:
   resourcePathPattern: /test-output/
   autoCodeDir: C:/autoCode/
   debug: false
+  content: hello
+
+# 钉钉机器人配置
+ding:
+ dingUrl: https://oapi.dingtalk.com/robot/send?access_token=91778ffe7bae70f49321eb63e59d1cea1a4670a71249cae5c8314ff86af48c8a
+ content: 接口自动化测试报告地址
+ isAtAll: false
+ mobileList: 15201891817
 server:
   port: 8885
 logging:
@@ -70,6 +78,9 @@ spring:
 mybatis:
   mapper-locations: com/hry/mapper/*.xml
   type-aliases-package: com.hry.po
+
+
+
 
 
 

@@ -52,6 +52,12 @@
             </div>
         </div>
         <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>邮箱：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="email" name="email">
+            </div>
+        </div>
+        <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">备注：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="" id="remark" name="remark">
@@ -153,7 +159,8 @@
                 if(status == 0){
                     var groupid = list.groupid;
                     var identity = list.identity;
-                    var realname=list.realname;
+                    var realname = list.realname;
+                    var email = list.email;
                     var remark=list.remark;
                     var submit="<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTuser("+id+")\"><i class=\"icon-ok\"></i> 提交</button>";
                     $("#submit").append(submit);
@@ -172,6 +179,7 @@
                     $("#groupid").append(html);
                     $("#identity").val(identity);
                     $("#realname").val(realname);
+                    $("#email").val(email);
                     $("#remark").val(remark);
 
                 }else{
@@ -193,6 +201,7 @@
         var groupid = $("#groupid").val();
         var identity = $("#identity").val();
         var realname = $("#realname").val();
+        var email = $("#email").val();
         var remark = $("#remark").val();
 
         if(groupid == null || groupid == ""){
@@ -204,6 +213,9 @@
         }else if(realname == null || realname == ""){
             layer.msg("姓名不能为空！");
             return;
+        }else if(email == null || email == ""){
+            layer.msg("邮箱不能为空！");
+            return;
         }else{
             $.ajax({
                 type: 'POST',
@@ -213,6 +225,7 @@
                     groupid:groupid,
                     identity:identity,
                     realname:realname,
+                    email:email,
                     remark:remark
                 },
                 dataType: 'json',

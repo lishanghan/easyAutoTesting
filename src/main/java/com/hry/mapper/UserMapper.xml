@@ -7,6 +7,7 @@
     <result column="identity" jdbcType="VARCHAR" property="identity" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="realname" jdbcType="VARCHAR" property="realname" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, groupId, identity, password, realname, status, remark
+    id, groupId, identity, password, realname, email, status, remark
   </sql>
   <select id="selectByExample" parameterType="com.hry.po.UserExample" resultMap="BaseResultMap">
     select
@@ -106,10 +107,10 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into user (groupId, identity, password, 
-      realname, status, remark
+      realname, email, status, remark
       )
     values (#{groupid,jdbcType=INTEGER}, #{identity,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{realname,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
+      #{realname,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.hry.po.User">
@@ -130,6 +131,9 @@
       <if test="realname != null">
         realname,
       </if>
+      <if test="email != null">
+        email,
+      </if>
       <if test="status != null">
         status,
       </if>
@@ -149,6 +153,9 @@
       </if>
       <if test="realname != null">
         #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
@@ -182,6 +189,9 @@
       <if test="record.realname != null">
         realname = #{record.realname,jdbcType=VARCHAR},
       </if>
+      <if test="record.email != null">
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
       <if test="record.status != null">
         status = #{record.status,jdbcType=INTEGER},
       </if>
@@ -200,6 +210,7 @@
       identity = #{record.identity,jdbcType=VARCHAR},
       password = #{record.password,jdbcType=VARCHAR},
       realname = #{record.realname,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=INTEGER},
       remark = #{record.remark,jdbcType=VARCHAR}
     <if test="_parameter != null">
@@ -221,6 +232,9 @@
       <if test="realname != null">
         realname = #{realname,jdbcType=VARCHAR},
       </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
@@ -236,6 +250,7 @@
       identity = #{identity,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       realname = #{realname,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
       remark = #{remark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}

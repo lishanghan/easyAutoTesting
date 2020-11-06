@@ -11,7 +11,7 @@ public class SSLUtil {
 
 
     /**
-     * 绕过验证
+     * 绕过https验证
      *
      * @return
      * @throws NoSuchAlgorithmException

@@ -220,6 +220,7 @@ public class TcustomServiceImpl implements TcustomService {
         Treport treport = treportService.insertOne(vo,isScheduler);
         //运行测试,并且更新测试报告
         runner.run(treport.getId(), treport.getReportname(), vo.getCustomname(), xmlSuite);
+        log.info("定制测试报告名称为："+ treport.getReportname());
         return treport.getReportname();
     }
 
